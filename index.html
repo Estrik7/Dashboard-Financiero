@@ -248,9 +248,10 @@ tr.hl-row td{background:var(--good-soft);color:var(--good)}
 .hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center;padding:30px;margin-bottom:28px}
 .hero h1{font-size:32px;line-height:1.15;letter-spacing:-.025em;font-weight:700;margin:10px 0 12px}
 .hero p{color:var(--muted);font-size:14.5px;max-width:600px}
-.meta{display:flex;flex-wrap:wrap;gap:0;margin-top:22px;border:1px solid var(--line);border-radius:8px;overflow:hidden;width:fit-content;max-width:100%}
-.meta div{padding:10px 16px;border-right:1px solid var(--line)}
-.meta div:last-child{border-right:0}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:22px;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:560px}
+.meta div{padding:10px 16px}
+.meta div:nth-child(odd){border-right:1px solid var(--line)}
+.meta div:nth-child(-n+2){border-bottom:1px solid var(--line)}
 .meta small{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600}
 .meta b{font-size:13px;font-weight:600}
 .hero-viz{position:relative;height:240px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);padding:16px 18px;overflow:hidden}
@@ -386,7 +387,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;padding:26px 0 0}
     <nav class="nav" id="nav"></nav>
     <div class="student">
       <div class="avatar">DC</div>
-      <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b><span>UNIMINUTO · 2026</span></div>
+      <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b><span>Tecnológico de Antioquia · 2026</span></div>
     </div>
   </aside>
 
@@ -1139,7 +1140,7 @@ function buildOverview() {
         <p>Seis herramientas de análisis que calculan, grafican e interpretan en tiempo real: interés compuesto, conversión de tasas, anualidades, gradientes aritmético y geométrico, y evaluación de proyectos con VPN y TIR.</p>
         <div class="meta">
           <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b></div>
-          <div><small>Institución</small><b>UNIMINUTO</b></div>
+          <div><small>Institución</small><b>Tecnológico de Antioquia I.U.</b></div>
           <div><small>Módulos</small><b>6 temas</b></div>
           <div><small>Año</small><b>2026</b></div>
         </div>
@@ -1163,7 +1164,7 @@ function buildOverview() {
       <div class="card"><span class="n">2</span><div><b>Cambia los datos</b><p>Escribe valores o usa los deslizadores. Todo se recalcula al instante.</p></div></div>
       <div class="card"><span class="n">3</span><div><b>Lee el análisis</b><p>Revisa el diagnóstico, el desarrollo paso a paso y exporta la tabla a CSV/Excel.</p></div></div>
     </div>
-    <footer>Dashboard de Matemáticas Financieras · Diego Alejandro Clavijo Gutiérrez · UNIMINUTO 2026</footer>
+    <footer>Dashboard de Matemáticas Financieras · Diego Alejandro Clavijo Gutiérrez · Tecnológico de Antioquia Institución Universitaria · 2026</footer>
   </section>`;
 }
 function buildModule(id) {
