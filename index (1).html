@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f1b2d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Dashboard Financiero · Matemáticas Financieras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>try{var th=localStorage.getItem("theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
+<style>
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --surface-2:#f8fafc; --th:#f1f4f8;
+  --line:#e3e7ee; --line-2:#d3dae5;
+  --text:#0f172a; --muted:#566174; --dim:#8a94a6;
+  --accent:#1d4ed8; --accent-h:#1e40af; --accent-soft:#eef3ff; --accent-line:#c9d7fb; --accent-text:#1d4ed8;
+  --good:#15803d; --good-soft:#effaf3; --good-line:#bfe5cc;
+  --bad:#b91c1c; --bad-soft:#fdf3f3; --bad-line:#f2c6c6;
+  --warn:#a16207; --warn-soft:#fdf9ec; --warn-line:#eedca8;
+  --side:#0f1b2d; --side-2:#182840; --side-line:#203250; --side-text:#c7d1e0; --side-dim:#7b89a0;
+  --grid:rgba(15,23,42,.06);
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 1px 3px rgba(15,23,42,.05);
+  --r:10px;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1018; --surface:#121a27; --surface-2:#0f1621; --th:#162031;
+    --line:#212c3d; --line-2:#2c3a50;
+    --text:#e5e9f0; --muted:#9ba6b8; --dim:#6c788d;
+    --accent:#2f6fec; --accent-h:#4a82f0; --accent-soft:rgba(59,130,246,.12); --accent-line:rgba(59,130,246,.35); --accent-text:#82aaff;
+    --good:#4ade80; --good-soft:rgba(34,197,94,.1); --good-line:rgba(34,197,94,.3);
+    --bad:#f87171; --bad-soft:rgba(239,68,68,.1); --bad-line:rgba(239,68,68,.3);
+    --warn:#fbbf24; --warn-soft:rgba(245,158,11,.1); --warn-line:rgba(245,158,11,.3);
+    --side:#0a0f17; --side-2:#141e2e; --side-line:#1b2738; --side-text:#c7d1e0; --side-dim:#6c788d;
+    --grid:rgba(255,255,255,.06);
+    --shadow:none;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1018; --surface:#121a27; --surface-2:#0f1621; --th:#162031;
+  --line:#212c3d; --line-2:#2c3a50;
+  --text:#e5e9f0; --muted:#9ba6b8; --dim:#6c788d;
+  --accent:#2f6fec; --accent-h:#4a82f0; --accent-soft:rgba(59,130,246,.12); --accent-line:rgba(59,130,246,.35); --accent-text:#82aaff;
+  --good:#4ade80; --good-soft:rgba(34,197,94,.1); --good-line:rgba(34,197,94,.3);
+  --bad:#f87171; --bad-soft:rgba(239,68,68,.1); --bad-line:rgba(239,68,68,.3);
+  --warn:#fbbf24; --warn-soft:rgba(245,158,11,.1); --warn-line:rgba(245,158,11,.3);
+  --side:#0a0f17; --side-2:#141e2e; --side-line:#1b2738; --side-text:#c7d1e0; --side-dim:#6c788d;
+  --grid:rgba(255,255,255,.06);
+  --shadow:none;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;font-feature-settings:"tnum" 1,"cv11" 1}
+button,input,select{font:inherit;color:inherit}
+::selection{background:rgba(29,78,216,.2)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
+
+/* ---------- Layout ---------- */
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh;min-height:100dvh}
+.sidebar{position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--side);color:var(--side-text);z-index:40}
+.brand{display:flex;align-items:center;gap:12px;padding:20px 20px 18px;border-bottom:1px solid var(--side-line)}
+.logo{width:36px;height:36px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#fff;flex-shrink:0}
+.logo svg{width:19px;height:19px}
+.brand h1{font-size:14px;font-weight:600;line-height:1.25;color:#fff}
+.brand p{font-size:11.5px;color:var(--side-dim)}
+.nav{flex:1;overflow-y:auto;padding:8px 12px 12px}
+.nav-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--side-dim);font-weight:600;padding:16px 10px 6px}
+.nav button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:6px;cursor:pointer;color:var(--side-text);transition:background .15s,color .15s;position:relative;margin-bottom:1px}
+.nav button:hover{background:var(--side-2);color:#fff}
+.nav button .ni{width:18px;height:18px;display:grid;place-items:center;flex-shrink:0;opacity:.75}
+.nav button .ni svg{width:17px;height:17px}
+.nav button .nt{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.nav button .nt b{font-size:13px;font-weight:500;color:inherit}
+.nav button .nt small{font-size:11px;color:var(--side-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav button .nn{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--side-dim)}
+.nav button.on{background:var(--side-2);color:#fff}
+.nav button.on .ni{opacity:1;color:#8fb2ff}
+.nav button.on::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 2px 2px 0;background:#4a82f0}
+.student{margin:12px;padding:12px;border-radius:8px;border:1px solid var(--side-line);display:flex;gap:11px;align-items:center}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--side-2);border:1px solid var(--side-line);display:grid;place-items:center;font-weight:600;font-size:12px;color:#fff;flex-shrink:0}
+.student small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--side-dim);font-weight:600}
+.student b{display:block;font-size:12px;font-weight:600;line-height:1.3;color:#fff}
+.student span{font-size:11px;color:var(--side-dim)}
+
+.content{min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:12px 32px;background:var(--surface);border-bottom:1px solid var(--line)}
+.crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);min-width:0}
+.crumb b{color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb svg{width:14px;height:14px;opacity:.6}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn.burger{display:none}
+main{padding:28px 32px 56px;max-width:1440px;width:100%;margin:0 auto}
+
+/* ---------- Componentes ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line-2);background:var(--surface);padding:8px 13px;border-radius:6px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap;color:var(--text)}
+.btn:hover{background:var(--surface-2);border-color:var(--dim)}
+.btn svg{width:15px;height:15px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-h);border-color:var(--accent-h)}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.icon{padding:6px 8px}
+.btn.w100{width:100%}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.card-h.between{justify-content:space-between;align-items:center}
+.card-h .ic{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-text);flex-shrink:0}
+.card-h .ic svg{width:17px;height:17px}
+.card-h h3{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+.card-h p{font-size:12px;color:var(--muted);margin-top:1px}
+.hl{font-family:var(--mono);font-weight:500;color:var(--accent-text);background:var(--accent-soft);padding:0 5px;border-radius:4px;white-space:nowrap}
+.hl.g{background:var(--good-soft);color:var(--good)}
+.hl.r{background:var(--bad-soft);color:var(--bad)}
+.hl.c{background:var(--surface-2);color:var(--text);box-shadow:inset 0 0 0 1px var(--line)}
+.hl.a{background:var(--warn-soft);color:var(--warn)}
+
+/* ---------- Módulo ---------- */
+.module{animation:enter .25s ease-out}
+.module[hidden]{display:none}
+@keyframes enter{from{opacity:0}to{opacity:1}}
+.mod-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:center;padding:26px;margin-bottom:20px}
+.eyebrow{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text)}
+.mod-hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:8px 0 8px}
+.mod-hero p{color:var(--muted);font-size:14px;max-width:620px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.formula-box{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.fb-label{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--dim)}
+.fb-tex{font-size:16px;padding:10px 0 8px;overflow-x:auto;overflow-y:hidden;color:var(--text)}
+.fb-tex .katex-display{margin:0}
+.fb-legend{font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;line-height:1.7}
+.fb-legend b{color:var(--text);font-family:var(--mono);font-weight:600}
+.mod-alert{display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:8px;background:var(--bad-soft);border:1px solid var(--bad-line);color:var(--bad);margin-bottom:20px;font-weight:500}
+.mod-alert[hidden]{display:none}
+.mod-alert svg{width:18px;height:18px;flex-shrink:0}
+
+.grid-main{display:grid;grid-template-columns:330px minmax(0,1fr);gap:20px;margin-bottom:20px;align-items:start}
+.params{position:sticky;top:80px}
+.main-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-bottom:20px}
+
+/* Campos */
+.fields{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
+.field[hidden]{display:none}
+.field label{font-size:12.5px;font-weight:500;color:var(--text);display:block}
+.fl-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.num-wrap{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--line-2);border-radius:6px;padding:0 9px;transition:border-color .15s,box-shadow .15s;max-width:150px;flex-shrink:0}
+.num-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.num-wrap span{font-size:12px;color:var(--dim);font-family:var(--mono)}
+.num-wrap input{all:unset;width:100%;min-width:0;font-family:var(--mono);font-size:13px;font-weight:500;padding:6px 0;text-align:right}
+.num-wrap input::-webkit-inner-spin-button{opacity:.4}
+.fl-hint{font-size:11px;color:var(--dim);font-family:var(--mono);display:flex;justify-content:space-between}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:linear-gradient(var(--accent),var(--accent)) 0/var(--p,50%) 100% no-repeat,var(--line);outline:none;margin:12px 0 6px;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--accent-soft)}
+.select{position:relative;margin-top:7px}
+.select select{appearance:none;-webkit-appearance:none;width:100%;background:var(--surface);border:1px solid var(--line-2);border-radius:6px;padding:8px 34px 8px 11px;font-size:13px;cursor:pointer;outline:none;transition:border-color .15s,box-shadow .15s}
+.select select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.select select option{background:var(--surface);color:var(--text)}
+.select::after{content:"";position:absolute;right:13px;top:50%;width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;margin-top:7px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:7px}
+.seg button{all:unset;text-align:center;padding:6px 6px;border-radius:5px;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.seg button:hover{color:var(--text)}
+.seg button.on{background:var(--accent);color:#fff}
+.flows{display:flex;flex-direction:column;gap:8px;margin-top:9px;max-height:330px;overflow-y:auto;padding-right:4px}
+.flow-row{display:grid;grid-template-columns:58px 1fr 32px;gap:8px;align-items:center}
+.flow-row .yr{font-size:11.5px;font-weight:500;color:var(--muted);font-family:var(--mono)}
+.flow-row .num-wrap{max-width:none}
+.icon-btn{all:unset;width:30px;height:30px;border-radius:6px;display:grid;place-items:center;cursor:pointer;color:var(--dim);border:1px solid var(--line);transition:.15s}
+.icon-btn:hover{color:var(--bad);border-color:var(--bad-line);background:var(--bad-soft)}
+.icon-btn svg{width:14px;height:14px}
+.add-flow{margin-top:10px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:14px}
+.kpi{position:relative;padding:16px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0}
+.kpi-l{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:7px}
+.kpi-l i{width:8px;height:8px;border-radius:2px;background:var(--tcs,var(--accent));flex-shrink:0}
+.kpi-v{font-family:var(--mono);font-size:20px;font-weight:600;letter-spacing:-.02em;margin:8px 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-s{font-size:11.5px;color:var(--muted);line-height:1.4}
+.kpi.main{background:var(--accent);border-color:var(--accent);color:#fff}
+.kpi.main .kpi-l,.kpi.main .kpi-s{color:rgba(255,255,255,.78)}
+.kpi.main .kpi-l i{background:#fff}
+.kpi.main .kpi-v{font-size:21px}
+.t-cyan{--tcs:#2563eb}
+.t-violet{--tcs:#0d9488}
+.t-emerald{--tcs:#16a34a}
+.t-amber{--tcs:#d97706}
+.t-rose{--tcs:#dc2626}
+
+.chart-card{display:flex;flex-direction:column;min-width:0}
+.chart-wrap{position:relative;height:320px;width:100%}
+.chart-note{font-size:12px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* Análisis */
+.verdict{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:8px;margin-bottom:14px;border:1px solid}
+.verdict .v-ic{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+.verdict .v-ic svg{width:20px;height:20px}
+.verdict small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.verdict strong{display:block;font-size:15.5px;font-weight:600;margin:2px 0 2px;color:var(--text)}
+.verdict p{font-size:12.5px;color:var(--muted)}
+.v-good{background:var(--good-soft);border-color:var(--good-line);color:var(--good)}
+.v-bad{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad)}
+.v-warn{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
+.v-info{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent-text)}
+.insights{list-style:none;display:flex;flex-direction:column;gap:0;counter-reset:ins}
+.insights li{position:relative;padding:11px 4px 11px 34px;border-bottom:1px solid var(--line);font-size:13px;color:var(--text);line-height:1.65;counter-increment:ins}
+.insights li:last-child{border-bottom:0}
+.insights li::before{content:counter(ins);position:absolute;left:2px;top:12px;width:20px;height:20px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);font-size:11px;font-weight:600;display:grid;place-items:center;font-family:var(--mono)}
+.insights li strong{font-weight:600}
+
+/* Pasos */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:12px;counter-reset:st}
+.steps li{counter-increment:st;position:relative;padding:14px 14px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);min-width:0}
+.steps li::before{content:"Paso " counter(st);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--accent-text)}
+.st-d{font-size:12.5px;color:var(--muted);margin:3px 0 8px}
+.st-tex{overflow-x:auto;overflow-y:hidden;font-size:14px;padding:4px 0}
+.st-tex .katex-display{margin:.2em 0;text-align:left}
+.st-tex .katex-display>.katex{text-align:left}
+.tex-fallback{font-family:var(--mono);font-size:12.5px;color:var(--accent-text);white-space:pre-wrap}
+
+/* Tabla */
+.table-wrap{max-height:440px;overflow:auto;border-radius:8px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{position:sticky;top:0;background:var(--th);text-align:right;padding:10px 14px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line-2);white-space:nowrap;z-index:1}
+thead th:first-child,tbody td:first-child{text-align:left}
+tbody td{padding:9px 14px;text-align:right;font-family:var(--mono);border-bottom:1px solid var(--line);white-space:nowrap;color:var(--text)}
+tbody tr:hover{background:var(--accent-soft)}
+tbody td.neg{color:var(--bad)}
+tfoot td{position:sticky;bottom:0;background:var(--th);padding:11px 14px;text-align:right;font-family:var(--mono);font-weight:600;border-top:1px solid var(--line-2);white-space:nowrap}
+tfoot td:first-child{text-align:left;font-family:var(--sans)}
+tr.hl-row td{background:var(--good-soft);color:var(--good)}
+
+/* ---------- Resumen ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center;padding:30px;margin-bottom:28px}
+.hero h1{font-size:32px;line-height:1.15;letter-spacing:-.025em;font-weight:700;margin:10px 0 12px}
+.hero p{color:var(--muted);font-size:14.5px;max-width:600px}
+.meta{display:flex;flex-wrap:wrap;gap:0;margin-top:22px;border:1px solid var(--line);border-radius:8px;overflow:hidden;width:fit-content;max-width:100%}
+.meta div{padding:10px 16px;border-right:1px solid var(--line)}
+.meta div:last-child{border-right:0}
+.meta small{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.meta b{font-size:13px;font-weight:600}
+.hero-viz{position:relative;height:240px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);padding:16px 18px;overflow:hidden}
+.hero-viz .hv-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.hero-viz small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.hero-viz .big{font-family:var(--mono);font-size:24px;font-weight:600}
+.hero-viz .up{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:4px;border:1px solid var(--good-line)}
+.hero-viz svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:65%}
+.sec-title{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:4px 0 14px}
+.sec-title::after{content:"";flex:1;height:1px;background:var(--line)}
+.ov-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:32px}
+.ov-card{cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.ov-card:hover{border-color:var(--accent-line);box-shadow:0 4px 14px -6px rgba(15,23,42,.15)}
+.ov-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ov-top{display:flex;align-items:center;gap:12px}
+.ov-ic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-text);flex-shrink:0}
+.ov-ic svg{width:18px;height:18px}
+.ov-top small{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.ov-top h4{font-size:14.5px;font-weight:600}
+.ov-metric small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.ov-metric div{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.02em}
+.ov-card .spark{height:44px;width:100%}
+.ov-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.ov-foot .go{display:flex;align-items:center;gap:5px;color:var(--accent-text);font-weight:500;flex-shrink:0}
+.ov-foot .go svg{width:14px;height:14px;transition:transform .15s}
+.ov-card:hover .go svg{transform:translateX(3px)}
+.pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;border:1px solid;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pill.good{color:var(--good);border-color:var(--good-line);background:var(--good-soft)}
+.pill.bad{color:var(--bad);border-color:var(--bad-line);background:var(--bad-soft)}
+.pill.warn{color:var(--warn);border-color:var(--warn-line);background:var(--warn-soft)}
+.pill.info{color:var(--accent-text);border-color:var(--accent-line);background:var(--accent-soft)}
+.route{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin-bottom:32px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.route div{position:relative;padding:16px;border-right:1px solid var(--line);border-top:3px solid var(--accent-line)}
+.route div:last-child{border-right:0}
+.route b{display:block;font-size:13px;font-weight:600;margin:6px 0 4px}
+.route span{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent-text)}
+.route p{font-size:12px;color:var(--muted)}
+.howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.howto .card{display:flex;gap:14px}
+.howto .n{width:28px;height:28px;border-radius:50%;border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent-text);display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;flex-shrink:0}
+.howto b{display:block;margin-bottom:3px;font-weight:600}
+.howto p{font-size:12.5px;color:var(--muted)}
+footer{text-align:center;color:var(--dim);font-size:12px;padding:26px 0 0}
+
+.scrim{display:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1280px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ov-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.route{grid-template-columns:repeat(3,minmax(0,1fr))}.route div:nth-child(3){border-right:0}.route div:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+@media (max-width:1100px){.grid-main,.grid-2,.mod-hero,.hero{grid-template-columns:minmax(0,1fr)}.params{position:static}}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:fixed;left:0;top:0;width:min(280px,86vw);transform:translateX(-100%);transition:transform .25s;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+  body.nav-open{overflow:hidden}
+  body.nav-open .sidebar{transform:none;box-shadow:20px 0 50px rgba(0,0,0,.35)}
+  body.nav-open .scrim{display:block;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:35}
+  .btn.burger{display:inline-flex}
+  .topbar{padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top));gap:10px}
+  .crumb>span:first-child,#crumbSep{display:none}
+  .crumb{flex:1;font-size:14px}
+  main{padding:16px max(16px,env(safe-area-inset-left)) calc(40px + env(safe-area-inset-bottom))}
+  .hero{padding:22px}.hero h1{font-size:28px}
+  .mod-hero{padding:20px}.mod-hero h1{font-size:23px}
+  .howto{grid-template-columns:minmax(0,1fr)}
+  /* Evita el zoom automático de iOS al tocar un campo (requiere ≥16px) */
+  .num-wrap input,.select select,.flows input{font-size:16px}
+  .num-wrap{max-width:160px}
+  .seg button{padding:9px 4px;font-size:12px}
+  input[type=range]{height:6px;margin:14px 0 8px}
+  input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
+  .hl{white-space:normal}
+  .card-h.between{flex-wrap:wrap;gap:10px}
+}
+@media (max-width:600px){
+  .kpis,.ov-grid{grid-template-columns:minmax(0,1fr)}
+  .route{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .route div{border-bottom:1px solid var(--line)}
+  .route div:nth-child(odd){border-right:1px solid var(--line)}
+  .route div:nth-child(even){border-right:0}
+  .route div:nth-child(n+5){border-bottom:0}
+  .top-actions .btn span{display:none}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .hero{padding:18px;gap:20px;margin-bottom:22px}
+  .hero h1{font-size:25px;margin:8px 0 10px}
+  .hero p{font-size:14px}
+  .meta{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .meta div{border-bottom:1px solid var(--line)}
+  .meta div:first-child{grid-column:1/-1;border-right:0}
+  .meta div:nth-child(2){border-right:1px solid var(--line)}
+  .meta div:nth-child(n+4){border-bottom:0}
+  .meta div:nth-child(3){border-right:0}
+  .meta div:nth-child(4){grid-column:1/-1}
+  .hero-viz{height:190px}
+  .eyebrow{font-size:10.5px}
+  .mod-hero{padding:16px;gap:16px;margin-bottom:16px}
+  .mod-hero h1{font-size:21px;margin:6px 0 6px}
+  .mod-hero p{font-size:13px}
+  .chips{display:none}
+  .formula-box{padding:14px}
+  .fb-tex{font-size:13px}
+  .grid-main,.grid-2,.main-col{gap:14px}
+  .grid-main,.grid-2{margin-bottom:14px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:12px}
+  .kpi.main{grid-column:1/-1}
+  .kpi-l{font-size:9.5px;letter-spacing:.03em}
+  .kpi-v{font-size:16px;margin:6px 0 3px}
+  .kpi.main .kpi-v{font-size:21px}
+  .kpi-s{font-size:10.5px}
+  .card{padding:16px}
+  .card-h{margin-bottom:14px}
+  .chart-wrap{height:250px}
+  .verdict{padding:12px;gap:10px}
+  .verdict strong{font-size:14.5px}
+  .insights li{font-size:12.5px}
+  .st-tex{font-size:12px}
+  table{font-size:11.5px}
+  thead th,tbody td,tfoot td{padding:8px 10px}
+  .table-wrap{max-height:380px}
+  .ov-grid{gap:12px;margin-bottom:24px}
+  .sec-title{font-size:11px}
+  .howto{gap:12px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="scrim" id="scrim"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo" id="logo"></div>
+      <div><h1>Matemáticas Financieras</h1><p>Dashboard analítico interactivo</p></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="student">
+      <div class="avatar">DC</div>
+      <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b><span>UNIMINUTO · 2026</span></div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="topbar">
+      <button class="btn sm burger" id="burger" aria-label="Abrir menú"></button>
+      <div class="crumb"><span>Dashboard</span><span id="crumbSep"></span><b id="crumb">Resumen ejecutivo</b></div>
+      <div class="top-actions">
+        <button class="btn sm icon" id="btnTheme" aria-label="Cambiar tema" title="Cambiar tema claro/oscuro"></button>
+        <button class="btn sm" id="btnReset"></button>
+        <button class="btn sm primary" id="btnCsv"></button>
+      </div>
+    </header>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+const T = String.raw;
+const nf = (v, d = 0) => Number.isFinite(v) ? v.toLocaleString('es-CO', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+const money = v => Number.isFinite(v) ? (v < 0 ? '−$ ' : '$ ') + nf(Math.abs(v)) : '—';
+const pct = (v, d = 2) => Number.isFinite(v) ? nf(v * 100, d) + '%' : '—';
+const compact = v => (v < 0 ? '−' : '') + '$' + new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: 1 }).format(Math.abs(v));
+const tn = (v, d = 0) => nf(v, d).replace(/,/g, '{,}');
+const tm = v => (v < 0 ? '-' : '') + '\\$' + tn(Math.abs(v));
+const pT = (v, d = 4) => tn(v * 100, d) + '\\%';
+const hl = (s, c = '') => `<b class="hl ${c}">${s}</b>`;
+const err = msg => ({ error: msg });
+const clone = o => JSON.parse(JSON.stringify(o));
+const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+const C = { cyan: '#2563eb', violet: '#0d9488', pink: '#7c3aed', emerald: '#16a34a', amber: '#d97706', rose: '#dc2626', blue: '#0891b2' };
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const PER = {
+  mensual:    { m: 12, s: 'mes',       p: 'meses',       adj: 'mensual' },
+  bimestral:  { m: 6,  s: 'bimestre',  p: 'bimestres',   adj: 'bimestral' },
+  trimestral: { m: 4,  s: 'trimestre', p: 'trimestres',  adj: 'trimestral' },
+  semestral:  { m: 2,  s: 'semestre',  p: 'semestres',   adj: 'semestral' },
+  anual:      { m: 1,  s: 'año',       p: 'años',        adj: 'anual' }
+};
+const PER_OPTS = Object.keys(PER).map(k => [k, PER[k].adj[0].toUpperCase() + PER[k].adj.slice(1)]);
+const FREQS = [
+  { k: 'Anual', m: 1, ab: 'A' }, { k: 'Semestral', m: 2, ab: 'S' }, { k: 'Cuatrimestral', m: 3, ab: 'C' },
+  { k: 'Trimestral', m: 4, ab: 'T' }, { k: 'Bimestral', m: 6, ab: 'B' }, { k: 'Mensual', m: 12, ab: 'M' },
+  { k: 'Quincenal', m: 24, ab: 'Q' }, { k: 'Semanal', m: 52, ab: 'Sm' }, { k: 'Diaria', m: 360, ab: 'D' }
+];
+const fq = m => FREQS.find(f => f.m === +m);
+const code = (m, ant) => +m === 1 ? (ant ? 'Anual anticipada' : 'EA') : `NA${fq(m).ab}${ant ? 'A' : 'V'}`;
+const annuityPV = (n, i) => i === 0 ? n : (1 - Math.pow(1 + i, -n)) / i;
+const annuityFV = (n, i) => i === 0 ? n : (Math.pow(1 + i, n) - 1) / i;
+
+/* ---------- Iconos (trazos estilo Lucide) ---------- */
+const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const I = {
+  grid: svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>'),
+  trend: svg('<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>'),
+  repeat: svg('<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>'),
+  card: svg('<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/><line x1="6" x2="10" y1="15" y2="15"/>'),
+  stairs: svg('<path d="M3 3v18h18"/><path d="M7 17v-2"/><path d="M11 17v-5"/><path d="M15 17V9"/><path d="M19 17V6"/>'),
+  curve: svg('<path d="M3 3v18h18"/><path d="M6 17c5 0 9-2 13-12"/><circle cx="19" cy="5" r="1.5"/>'),
+  target: svg('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>'),
+  sliders: svg('<line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/>'),
+  chart: svg('<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>'),
+  bars: svg('<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>'),
+  spark: svg('<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>'),
+  sigma: svg('<path d="M18 7V4H6l6 8-6 8h12v-3"/>'),
+  table: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>'),
+  download: svg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>'),
+  reset: svg('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'),
+  menu: svg('<line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>'),
+  plus: svg('<path d="M12 5v14M5 12h14"/>'),
+  x: svg('<path d="M18 6 6 18M6 6l12 12"/>'),
+  arrow: svg('<path d="M5 12h14M12 5l7 7-7 7"/>'),
+  chev: svg('<path d="m9 18 6-6-6-6"/>'),
+  good: svg('<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'),
+  bad: svg('<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>'),
+  warn: svg('<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/>'),
+  info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
+  logo: svg('<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>'),
+  sun: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'),
+  moon: svg('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>')
+};
+
+/* ---------- Opciones comunes de gráficos ---------- */
+function opts({ y = 'money', stacked = false, legend = true, xLinear = false, xTitle = '', yTitle = '', xFmt = null } = {}) {
+  const sm = typeof window !== 'undefined' && window.innerWidth < 600;
+  const yf = y === 'money' ? compact : y === 'pct' ? v => nf(v, 1) + '%' : v => nf(v);
+  const tf = y === 'money' ? money : y === 'pct' ? v => nf(v, 3) + '%' : v => nf(v, 2);
+  return {
+    responsive: true, maintainAspectRatio: false,
+    animation: { duration: 600, easing: 'easeOutQuart' },
+    interaction: { mode: xLinear ? 'nearest' : 'index', intersect: false },
+    plugins: {
+      legend: { display: legend, position: sm ? 'bottom' : 'top', align: sm ? 'center' : 'end', labels: { usePointStyle: true, pointStyle: 'circle', boxWidth: 7, boxHeight: 7, padding: sm ? 10 : 16, font: { size: sm ? 10.5 : 11.5, weight: '500' } } },
+      tooltip: {
+        backgroundColor: cssv('--surface'), borderColor: cssv('--line-2'), borderWidth: 1, padding: 10, cornerRadius: 6,
+        titleColor: cssv('--text'), bodyColor: cssv('--text'),
+        titleFont: { weight: '600', size: 12 }, bodyFont: { family: 'IBM Plex Mono', size: 12 }, boxPadding: 5, usePointStyle: true,
+        callbacks: {
+          title: items => items.length ? (xFmt ? xFmt(items[0].parsed.x) : items[0].label) : '',
+          label: c => ` ${c.dataset.label}: ${tf(c.parsed.y)}`
+        }
+      }
+    },
+    scales: {
+      x: { type: xLinear ? 'linear' : 'category', stacked, grid: { display: false }, border: { color: cssv('--line-2') },
+           ticks: Object.assign({ maxRotation: 0, autoSkip: true, maxTicksLimit: sm ? 6 : 12, font: { size: sm ? 10 : 11.5 } }, xLinear && xFmt ? { callback: v => xFmt(v) } : {}),
+           title: { display: !!xTitle && !sm, text: xTitle, color: cssv('--dim'), font: { size: 11, weight: '500' } } },
+      y: { stacked, grid: { color: cssv('--grid') }, border: { display: false }, ticks: { callback: yf, maxTicksLimit: sm ? 6 : 8, font: { size: sm ? 10 : 11.5 } },
+           title: { display: !!yTitle, text: yTitle, color: cssv('--dim'), font: { size: 11, weight: '500' } } }
+    }
+  };
+}
+
+/* =========================================================
+   ESTADO Y VALORES POR DEFECTO
+   ========================================================= */
+const DEF = {
+  compuesto:  { modo: 'VF', P: 10000000, F: 15000000, i: 1.5, n: 24, per: 'mensual' },
+  conversion: { tipo: 'nominal', valor: 24, m: 12, mod: 'vencida', inf: 5.2 },
+  anualidad:  { modo: 'cuota', VP: 20000000, R: 950000, i: 1.8, n: 24, tipo: 'vencida', k: 0, per: 'mensual' },
+  garit:      { A: 800000, G: 50000, i: 1.5, n: 12, dir: 'creciente', per: 'mensual' },
+  ggeo:       { A: 800000, g: 3, i: 1.5, n: 12, dir: 'creciente', per: 'mensual' },
+  vpn:        { Io: 50000000, tio: 12, flujos: [12000000, 15000000, 18000000, 20000000, 22000000] }
+};
+let S = clone(DEF);
+
+/* =========================================================
+   MÓDULOS
+   ========================================================= */
+const MODS = {};
+
+/* ---------- 1. Interés compuesto ---------- */
+MODS.compuesto = {
+  num: '01', icon: 'trend', title: 'Interés compuesto', short: 'Valor futuro y presente', tag: 'Valor del dinero en el tiempo',
+  desc: 'Los intereses se capitalizan: en cada periodo se suman al capital y empiezan a generar nuevos intereses. Calcula el valor futuro, el valor presente, la tasa o el plazo necesario.',
+  chips: ['Capitalización', 'Interés sobre interés', 'Equivalencia financiera'],
+  formula: T`F = P\,(1+i)^{n}`,
+  legend: '<b>F</b> valor futuro · <b>P</b> valor presente · <b>i</b> tasa efectiva por periodo · <b>n</b> número de periodos',
+  fields: [
+    { k: 'modo', t: 'select', l: '¿Qué deseas calcular?', o: [['VF', 'Valor futuro (F)'], ['VP', 'Valor presente (P)'], ['i', 'Tasa de interés (i)'], ['n', 'Número de periodos (n)']] },
+    { k: 'P', t: 'money', l: 'Capital inicial (P)', min: 100000, max: 200000000, step: 100000, show: s => s.modo !== 'VP' },
+    { k: 'F', t: 'money', l: 'Valor futuro (F)', min: 100000, max: 400000000, step: 100000, show: s => s.modo !== 'VF' },
+    { k: 'i', t: 'pct', l: 'Tasa efectiva periódica (i)', min: 0.1, max: 10, step: 0.05, show: s => s.modo !== 'i' },
+    { k: 'n', t: 'int', l: 'Número de periodos (n)', min: 1, max: 120, step: 1, show: s => s.modo !== 'n' },
+    { k: 'per', t: 'seg', l: 'Periodicidad', o: PER_OPTS.map(([v, l]) => [v, l.slice(0, 5) === 'Bimes' ? 'Bim.' : l.slice(0, 4) + '.']) }
+  ],
+  compute(s) {
+    const p = PER[s.per], m = p.m;
+    let P = +s.P, F = +s.F, i = s.i / 100, n = +s.n;
+    if (s.modo === 'VF') { if (!(P > 0)) return err('El capital inicial debe ser mayor que cero.'); F = P * Math.pow(1 + i, n); }
+    else if (s.modo === 'VP') { if (!(F > 0)) return err('El valor futuro debe ser mayor que cero.'); P = F / Math.pow(1 + i, n); }
+    else if (s.modo === 'i') { if (!(P > 0 && F > P && n > 0)) return err('Para calcular la tasa, el valor futuro (F) debe ser mayor que el capital inicial (P).'); i = Math.pow(F / P, 1 / n) - 1; }
+    else { if (!(P > 0 && F > P)) return err('Para calcular el plazo, el valor futuro (F) debe ser mayor que el capital inicial (P).'); if (!(i > 0)) return err('La tasa debe ser mayor que 0.'); n = Math.log(F / P) / Math.log(1 + i); }
+    if (!(i > 0) || !(n > 0)) return err('La tasa y el plazo deben ser mayores que cero.');
+
+    const EA = Math.pow(1 + i, m) - 1, I = F - P, Fs = P * (1 + i * n), extra = F - Fs, dup = Math.log(2) / Math.log(1 + i);
+    const N = Math.min(Math.ceil(n - 1e-9), 600);
+    const lab = [], sal = [], sim = [], intP = [], rows = [];
+    let prev = P;
+    for (let t = 0; t <= N; t++) {
+      const tt = Math.min(t, n), b = P * Math.pow(1 + i, tt), bs = P * (1 + i * tt);
+      lab.push(t); sal.push(b); sim.push(bs);
+      if (t > 0) { intP.push(b - prev); rows.push([t, prev, b - prev, b, bs, b - bs]); }
+      prev = b;
+    }
+    const firstInt = P * i, lastInt = P * i * Math.pow(1 + i, Math.max(Math.floor(n) - 1, 0));
+
+    const mains = {
+      VF: { l: 'Valor futuro (F)', v: F, f: 'money', sub: `Partiendo de ${money(P)}` },
+      VP: { l: 'Valor presente (P)', v: P, f: 'money', sub: `Para obtener ${money(F)}` },
+      i:  { l: 'Tasa periódica (i)', v: i, f: 'pct', d: 4, sub: `Tasa ${p.adj} requerida` },
+      n:  { l: 'Periodos necesarios', v: n, f: 'num', d: 2, u: ' ' + p.p, sub: `≈ ${nf(n / m, 2)} años` }
+    };
+    const kpis = [
+      { ...mains[s.modo], main: true },
+      { l: 'Intereses generados', v: I, f: 'money', sub: `${pct(I / P, 1)} sobre el capital`, tone: 'emerald' },
+      { l: 'Tasa efectiva anual', v: EA, f: 'pct', d: 2, sub: `Equivale a ${pct(i, 3)} ${p.adj}`, tone: 'violet' },
+      { l: 'Tiempo de duplicación', v: dup, f: 'num', d: 1, u: ' ' + p.p, sub: `≈ ${nf(dup / m, 1)} años`, tone: 'amber' }
+    ];
+    const verdicts = {
+      VF: { tone: 'good', title: `El capital crece ${pct(F / P - 1, 1)}`, text: `En ${nf(n)} ${p.p} el dinero se multiplica por ${nf(F / P, 3)} gracias a la capitalización periódica de intereses.` },
+      VP: { tone: 'info', title: `Debes invertir hoy ${money(P)}`, text: `Es el valor presente que, al ${pct(i)} ${p.adj}, se convierte en ${money(F)} dentro de ${nf(n)} ${p.p}.` },
+      i:  { tone: EA > 0.3 ? 'warn' : 'good', title: `Se requiere ${pct(i, 4)} ${p.adj}`, text: `Equivale a ${pct(EA)} efectivo anual. ${EA > 0.3 ? 'Es una rentabilidad muy exigente, difícil de lograr con instrumentos de bajo riesgo.' : 'Es una rentabilidad razonable frente a las tasas del mercado.'}` },
+      n:  { tone: 'info', title: `Meta alcanzada en ${nf(n, 2)} ${p.p}`, text: `Aproximadamente ${nf(n / m, 2)} años invirtiendo ${money(P)} al ${pct(i)} ${p.adj}.` }
+    };
+    const insights = [
+      `Un capital de ${hl(money(P), 'c')} invertido al ${hl(pct(i, 3))} ${p.adj} durante ${hl(nf(n, 2) + ' ' + p.p)} se convierte en ${hl(money(F), 'g')}. Los intereses (${money(I)}) representan el <strong>${pct(I / F, 1)}</strong> del valor final.`,
+      `Con <strong>interés simple</strong> se obtendrían ${hl(money(Fs))}. La capitalización genera ${hl(money(extra), 'g')} adicionales (${pct(extra / (P * i * n), 1)} más intereses): ese excedente es el <em>interés sobre interés</em>.`,
+      m > 1 ? `La tasa ${pct(i, 3)} ${p.adj} equivale a ${hl(pct(EA), 'a')} efectivo anual, mayor que multiplicarla por ${m} (${pct(i * m)}), porque los intereses de cada ${p.s} también rinden.` : `Al tratarse de una tasa anual, la tasa periódica y la efectiva anual coinciden: ${hl(pct(EA), 'a')}.`,
+      `A este ritmo el dinero se <strong>duplica cada ${nf(dup, 1)} ${p.p}</strong> (≈ ${nf(dup / m, 1)} años). La regla práctica del 72 estima ${nf(72 / (EA * 100), 1)} años, muy cercano al valor exacto.`,
+      `El interés del primer ${p.s} es ${hl(money(firstInt))}; el del último ${p.s} completo asciende a ${hl(money(lastInt), 'g')}, es decir <strong>${nf(lastInt / firstInt, 2)} veces</strong> más, aunque la tasa es la misma.`
+    ];
+    const steps = [];
+    if (s.modo === 'VF') steps.push(
+      { d: 'Se aplica la fórmula de valor futuro con los datos ingresados.', tex: T`F = P(1+i)^n = ${tm(P)}\,(1+${tn(i, 4)})^{${tn(n)}}` },
+      { d: 'Se calcula el factor de capitalización.', tex: T`(1+${tn(i, 4)})^{${tn(n)}} = ${tn(Math.pow(1 + i, n), 6)}` },
+      { d: 'Resultado: valor futuro.', tex: T`F = ${tm(P)}\times ${tn(Math.pow(1 + i, n), 6)} = \boxed{${tm(F)}}` });
+    if (s.modo === 'VP') steps.push(
+      { d: 'Se despeja P de la fórmula de interés compuesto.', tex: T`P = \frac{F}{(1+i)^n} = \frac{${tm(F)}}{(1+${tn(i, 4)})^{${tn(n)}}}` },
+      { d: 'Se calcula el factor de descuento.', tex: T`(1+${tn(i, 4)})^{-${tn(n)}} = ${tn(Math.pow(1 + i, -n), 6)}` },
+      { d: 'Resultado: valor presente.', tex: T`P = \boxed{${tm(P)}}` });
+    if (s.modo === 'i') steps.push(
+      { d: 'Se despeja la tasa i.', tex: T`i = \left(\frac{F}{P}\right)^{1/n} - 1` },
+      { d: 'Se reemplazan los valores.', tex: T`i = \left(\frac{${tm(F)}}{${tm(P)}}\right)^{1/${tn(n)}} - 1` },
+      { d: 'Resultado: tasa periódica.', tex: T`i = \boxed{${pT(i)}}\ \text{${p.adj}}` });
+    if (s.modo === 'n') steps.push(
+      { d: 'Se despeja n aplicando logaritmos.', tex: T`n = \frac{\ln(F/P)}{\ln(1+i)}` },
+      { d: 'Se reemplazan los valores.', tex: T`n = \frac{\ln(${tn(F / P, 6)})}{\ln(${tn(1 + i, 4)})} = \frac{${tn(Math.log(F / P), 6)}}{${tn(Math.log(1 + i), 6)}}` },
+      { d: 'Resultado: número de periodos.', tex: T`n = \boxed{${tn(n, 2)}}\ \text{${p.p}}` });
+    steps.push(
+      { d: 'Intereses totales generados.', tex: T`I = F - P = ${tm(F)} - ${tm(P)} = ${tm(I)}` },
+      { d: `Tasa efectiva anual equivalente (m = ${m}).`, tex: T`EA = (1+i)^{m}-1 = (1+${tn(i, 4)})^{${m}}-1 = ${pT(EA, 2)}` });
+
+    return {
+      kpis, verdict: verdicts[s.modo], insights, steps, spark: sal,
+      chart1: {
+        title: 'Crecimiento del capital: compuesto vs. simple',
+        note: 'El área muestra la curva exponencial del interés compuesto; la línea punteada, el crecimiento lineal del interés simple. La brecha entre ambas es el interés sobre interés.',
+        cfg: { type: 'line', data: { labels: lab, datasets: [
+          { label: 'Interés compuesto', data: sal, borderColor: C.cyan, backgroundColor: rgba(C.cyan, .08), fill: true, tension: .35, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5 },
+          { label: 'Interés simple', data: sim, borderColor: C.violet, borderDash: [6, 5], borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      chart2: {
+        title: `Interés generado en cada ${p.s}`,
+        note: 'Cada barra es mayor que la anterior porque el interés se calcula sobre un saldo creciente. La línea muestra el interés constante que daría el interés simple.',
+        cfg: { type: 'bar', data: { labels: lab.slice(1), datasets: [
+          { type: 'line', label: 'Interés simple (constante)', data: lab.slice(1).map(() => P * i), borderColor: C.amber, borderDash: [5, 4], borderWidth: 2, pointRadius: 0 },
+          { label: 'Interés compuesto del periodo', data: intP, backgroundColor: C.violet, borderRadius: 2, maxBarThickness: 26 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      table: { title: 'Tabla de capitalización', cols: [p.s[0].toUpperCase() + p.s.slice(1), 'Saldo inicial', 'Interés', 'Saldo final', 'Saldo interés simple', 'Ventaja compuesto'], fmt: ['int', 'money', 'money', 'money', 'money', 'money'], rows, foot: ['Total', '', I, F, Fs, extra] }
+    };
+  }
+};
+
+/* ---------- 2. Conversión de tasas ---------- */
+MODS.conversion = {
+  num: '02', icon: 'repeat', title: 'Conversión de tasas de interés', short: 'Nominal y efectiva', tag: 'Equivalencia de tasas',
+  desc: 'Dos tasas son equivalentes cuando producen el mismo valor futuro en el mismo plazo. Convierte entre tasas nominales, efectivas periódicas y efectivas anuales, vencidas o anticipadas, y descuenta la inflación.',
+  chips: ['Nominal a efectiva', 'Vencida a anticipada', 'Tasa real (Fisher)'],
+  formula: T`EA = \left(1+\tfrac{j}{m}\right)^{m}-1 \qquad i_v = \frac{i_a}{1-i_a}`,
+  legend: '<b>j</b> tasa nominal anual · <b>m</b> capitalizaciones al año · <b>i<sub>v</sub></b> tasa vencida · <b>i<sub>a</sub></b> tasa anticipada · <b>EA</b> efectiva anual',
+  fields: [
+    { k: 'tipo', t: 'select', l: 'Tipo de tasa conocida', o: [['nominal', 'Tasa nominal anual (j)'], ['efectiva', 'Tasa efectiva periódica (i)'], ['ea', 'Tasa efectiva anual (EA)']] },
+    { k: 'valor', t: 'pct', l: 'Valor de la tasa', min: 0.5, max: 60, step: 0.1 },
+    { k: 'm', t: 'select', l: 'Periodo de capitalización', o: FREQS.map(f => [f.m, `${f.k} (m = ${f.m})`]), show: s => s.tipo !== 'ea' },
+    { k: 'mod', t: 'seg', l: 'Forma de liquidación', o: [['vencida', 'Vencida'], ['anticipada', 'Anticipada']], show: s => s.tipo !== 'ea' },
+    { k: 'inf', t: 'pct', l: 'Inflación anual esperada', min: 0, max: 20, step: 0.1 }
+  ],
+  compute(s) {
+    const v = s.valor / 100, m = +s.m, ant = s.mod === 'anticipada', inf = s.inf / 100;
+    if (!(v > 0)) return err('La tasa debe ser mayor que cero.');
+    let per = null, ip = null, EA;
+    if (s.tipo === 'ea') EA = v;
+    else {
+      per = s.tipo === 'nominal' ? v / m : v;
+      if (ant) { if (per >= 1) return err('Una tasa anticipada por periodo debe ser menor al 100%.'); ip = per / (1 - per); } else ip = per;
+      EA = Math.pow(1 + ip, m) - 1;
+    }
+    const eq = FREQS.map(f => { const ie = Math.pow(1 + EA, 1 / f.m) - 1, ia = ie / (1 + ie); return { ...f, ie, ia, nv: ie * f.m, na: ia * f.m }; });
+    const m0 = s.tipo === 'ea' ? 12 : m, e0 = eq.find(e => e.m === m0), jv = e0.nv;
+    const capEA = FREQS.map(f => Math.pow(1 + jv / f.m, f.m) - 1), cont = Math.exp(jv) - 1;
+    const real = (1 + EA) / (1 + inf) - 1, mens = eq.find(e => e.m === 12);
+    const desc = s.tipo === 'ea' ? `${pct(v)} EA` : s.tipo === 'nominal' ? `${pct(v)} ${code(m, ant)}` : `${pct(v)} efectiva ${fq(m).k.toLowerCase()} ${ant ? 'anticipada' : 'vencida'}`;
+    const EAalt = s.tipo === 'ea' ? null : (ant ? Math.pow(1 + per, m) - 1 : (per < 1 ? Math.pow(1 + per / (1 - per), m) - 1 : NaN));
+
+    const kpis = [
+      { l: 'Efectiva anual (EA)', v: EA, f: 'pct', d: 3, main: true, sub: `Equivalente de ${desc}` },
+      { l: 'Efectiva mensual', v: mens.ie, f: 'pct', d: 4, sub: `Nominal ${code(12, false)}: ${pct(mens.nv, 3)}`, tone: 'cyan' },
+      { l: 'Continua equivalente', v: Math.log(1 + EA), f: 'pct', d: 3, sub: 'Límite: capitalización infinita', tone: 'violet' },
+      { l: 'Tasa real (Fisher)', v: real, f: 'pct', d: 3, sub: `Descontando ${pct(inf, 1)} de inflación`, tone: real >= 0 ? 'emerald' : 'rose' }
+    ];
+    const insights = [`La tasa ingresada (${hl(desc, 'c')}) equivale a una tasa <strong>efectiva anual de ${hl(pct(EA, 3), 'g')}</strong>. La EA es la medida comparable: indica cuánto rinde o cuesta realmente el dinero en un año.`];
+    if (s.tipo !== 'ea') {
+      const jIn = s.tipo === 'nominal' ? v : v * m;
+      insights.push(`Entre la tasa nominal ${pct(jIn, 2)} y la EA ${pct(EA, 3)} hay <strong>${nf((EA - jIn) * 100, 2)} puntos porcentuales</strong> de diferencia: es el efecto de capitalizar ${m} ${m === 1 ? 'vez' : 'veces'} al año${ant ? ' y de cobrar los intereses por anticipado' : ''}.`);
+      insights.push(ant
+        ? `Al liquidarse <strong>anticipada</strong>, la tasa efectiva del periodo sube de ${hl(pct(per, 4))} a ${hl(pct(ip, 4), 'a')}, porque los intereses se pagan al inicio y el dinero disponible es menor. Si fuera vencida, la EA sería ${pct(EAalt, 3)}.`
+        : `Si la misma tasa se liquidara <strong>anticipada</strong>, la EA subiría a ${hl(Number.isFinite(EAalt) ? pct(EAalt, 3) : '—', 'a')}: cobrar intereses por anticipado siempre encarece el crédito.`);
+    } else {
+      insights.push(`Para expresarla como nominal mes vencido debe usarse ${hl(pct(mens.nv, 3))} ${code(12, false)}; como trimestre vencido, ${hl(pct(eq.find(e => e.m === 4).nv, 3))} ${code(4, false)}. Todas producen el mismo resultado anual.`);
+    }
+    insights.push(`Con una inflación esperada de ${pct(inf, 1)}, la <strong>tasa real</strong> es ${hl(pct(real, 3), real >= 0 ? 'g' : 'r')}: ${real >= 0 ? 'el dinero gana poder adquisitivo.' : 'el rendimiento no alcanza a cubrir la inflación y se pierde poder adquisitivo.'}`);
+    insights.push(`Aun capitalizando de forma <strong>continua</strong>, una nominal de ${pct(jv, 2)} no superaría una EA de ${hl(pct(cont, 3))}: el límite matemático es e<sup>j</sup> − 1.`);
+
+    const steps = [];
+    if (s.tipo === 'nominal') steps.push({ d: 'Tasa del periodo a partir de la nominal.', tex: T`i_p = \frac{j}{m} = \frac{${pT(v, 2)}}{${m}} = ${pT(per)}` });
+    if (s.tipo !== 'ea' && ant) steps.push({ d: 'Conversión de anticipada a vencida.', tex: T`i_v = \frac{i_a}{1-i_a} = \frac{${tn(per, 6)}}{1-${tn(per, 6)}} = ${pT(ip)}` });
+    if (s.tipo !== 'ea') steps.push({ d: 'Efectiva anual equivalente.', tex: T`EA = (1+i_v)^{m}-1 = (1+${tn(ip, 6)})^{${m}}-1 = ${pT(EA)}` });
+    steps.push(
+      { d: 'Tasa efectiva mensual equivalente.', tex: T`i_{mes} = (1+EA)^{1/12}-1 = (1+${tn(EA, 6)})^{1/12}-1 = ${pT(mens.ie)}` },
+      { d: `Nominal mes vencido (${code(12, false)}) y anticipada (${code(12, true)}).`, tex: T`j = i_{mes}\times 12 = ${pT(mens.nv)} \qquad j_a = \frac{i_{mes}}{1+i_{mes}}\times 12 = ${pT(mens.na)}` },
+      { d: 'Tasa real con la ecuación de Fisher.', tex: T`i_r = \frac{1+EA}{1+\pi}-1 = \frac{${tn(1 + EA, 6)}}{${tn(1 + inf, 4)}}-1 = ${pT(real)}` });
+
+    return {
+      kpis, insights, steps, spark: capEA,
+      verdict: { tone: real >= 0 ? 'good' : 'warn', title: `${pct(EA, 3)} efectivo anual`, text: real >= 0 ? `Tasa real positiva de ${pct(real, 2)} después de inflación.` : `Atención: la tasa real es negativa (${pct(real, 2)}), la inflación supera el rendimiento.` },
+      chart1: {
+        title: 'Tasas nominales equivalentes a la misma EA',
+        note: 'Para producir la misma EA, cuanto más frecuente es la capitalización menor es la nominal necesaria. La nominal anticipada siempre es inferior a la vencida.',
+        cfg: { type: 'bar', data: { labels: FREQS.map(f => f.k), datasets: [
+          { label: 'Nominal vencida', data: eq.map(e => e.nv * 100), backgroundColor: C.cyan, borderRadius: 2, maxBarThickness: 28 },
+          { label: 'Nominal anticipada', data: eq.map(e => e.na * 100), backgroundColor: C.violet, borderRadius: 2, maxBarThickness: 28 }
+        ] }, options: opts({ y: 'pct' }) }
+      },
+      chart2: {
+        title: `Efecto de la capitalización sobre una nominal de ${pct(jv, 2)}`,
+        note: 'Con la misma tasa nominal, capitalizar más veces al año aumenta la tasa efectiva anual, pero el aumento se frena: la curva tiende al límite de capitalización continua.',
+        cfg: { type: 'bar', data: { labels: [...FREQS.map(f => f.k), 'Continua'], datasets: [
+          { type: 'line', label: 'Tasa nominal', data: Array(FREQS.length + 1).fill(jv * 100), borderColor: C.amber, borderDash: [6, 5], borderWidth: 2, pointRadius: 0 },
+          { label: 'EA resultante', data: [...capEA, cont].map(x => x * 100), backgroundColor: C.emerald, borderRadius: 2, maxBarThickness: 34 }
+        ] }, options: (() => { const o = opts({ y: 'pct' }); o.scales.y.min = Math.floor(jv * 100 * 0.95); return o; })() }
+      },
+      table: { title: 'Tabla de tasas equivalentes', cols: ['Periodicidad', 'm', 'Efectiva periódica vencida', 'Efectiva periódica anticipada', 'Nominal vencida', 'Nominal anticipada'], fmt: ['text', 'int', 'pct4', 'pct4', 'text', 'text'],
+        rows: eq.map(e => [e.k, e.m, e.ie, e.ia, `${pct(e.nv, 4)} ${code(e.m, false)}`, `${pct(e.na, 4)} ${e.m === 1 ? '' : code(e.m, true)}`]), mark: eq.findIndex(e => e.m === m0) }
+    };
+  }
+};
+
+/* ---------- 3. Anualidades ---------- */
+MODS.anualidad = {
+  num: '03', icon: 'card', title: 'Anualidades', short: 'Series uniformes', tag: 'Series de pagos iguales',
+  desc: 'Serie de pagos iguales realizados a intervalos regulares con la misma tasa. Calcula la cuota de un crédito o el valor presente y futuro de una serie, vencida o anticipada, con periodos de gracia (anualidad diferida).',
+  chips: ['Vencida', 'Anticipada', 'Diferida', 'Tabla de amortización'],
+  formula: T`VP = R\left[\frac{1-(1+i)^{-n}}{i}\right] \quad VF = R\left[\frac{(1+i)^{n}-1}{i}\right]`,
+  legend: '<b>R</b> cuota periódica · <b>VP</b> valor presente · <b>VF</b> valor futuro · <b>i</b> tasa por periodo · <b>n</b> número de cuotas · <b>k</b> periodos de gracia',
+  fields: [
+    { k: 'modo', t: 'select', l: '¿Qué deseas calcular?', o: [['cuota', 'La cuota de un préstamo (R)'], ['valores', 'VP y VF de una cuota conocida']] },
+    { k: 'VP', t: 'money', l: 'Monto del préstamo (VP)', min: 500000, max: 300000000, step: 500000, show: s => s.modo === 'cuota' },
+    { k: 'R', t: 'money', l: 'Valor de la cuota (R)', min: 50000, max: 20000000, step: 10000, show: s => s.modo === 'valores' },
+    { k: 'i', t: 'pct', l: 'Tasa efectiva periódica (i)', min: 0.1, max: 8, step: 0.05 },
+    { k: 'n', t: 'int', l: 'Número de cuotas (n)', min: 1, max: 360, step: 1 },
+    { k: 'k', t: 'int', l: 'Periodos de gracia (k)', min: 0, max: 36, step: 1 },
+    { k: 'tipo', t: 'seg', l: 'Tipo de anualidad', o: [['vencida', 'Vencida'], ['anticipada', 'Anticipada']] },
+    { k: 'per', t: 'select', l: 'Periodicidad', o: PER_OPTS }
+  ],
+  compute(s) {
+    const p = PER[s.per], i = s.i / 100, n = Math.round(s.n), k = Math.round(s.k), ant = s.tipo === 'anticipada';
+    if (!(i > 0)) return err('La tasa debe ser mayor que cero.');
+    if (!(n >= 1)) return err('Debe haber al menos una cuota.');
+    if (!(k >= 0)) return err('Los periodos de gracia no pueden ser negativos.');
+    const a = annuityPV(n, i), sf = annuityFV(n, i), f = ant ? 1 + i : 1, d = Math.pow(1 + i, k);
+    let R, VP;
+    if (s.modo === 'cuota') { VP = +s.VP; if (!(VP > 0)) return err('El monto del préstamo debe ser mayor que cero.'); R = VP * d / (a * f); }
+    else { R = +s.R; if (!(R > 0)) return err('La cuota debe ser mayor que cero.'); VP = R * a * f / d; }
+    const VF = R * sf * f, total = R * n, intereses = total - VP;
+    const Ralt = VP * d / (a * (ant ? 1 : 1 + i)), Rng = VP / (a * f);
+
+    const payAt = t => ant ? (t >= k && t < k + n) : (t >= k + 1 && t <= k + n);
+    let B = VP; const rows = [], lab = [], sal = [], intS = [], abS = [], cumI = [];
+    let ci = 0, cross = null, firstPay = null, lastPay = null;
+    for (let t = 0; t <= (ant ? k + n - 1 : k + n); t++) {
+      const b0 = B, it = t === 0 ? 0 : B * i; B += it;
+      const pay = payAt(t) ? R : 0, ab = pay - it; B -= pay; if (Math.abs(B) < 0.5) B = 0;
+      ci += it;
+      rows.push([t, b0, it, pay, ab, B]);
+      lab.push(t); sal.push(B); intS.push(it); abS.push(pay ? ab : 0); cumI.push(ci);
+      if (pay) { if (!firstPay) firstPay = { it, ab }; lastPay = { it, ab }; if (cross === null && ab > it) cross = t; }
+    }
+    const share = intereses / total;
+    const kpis = [
+      s.modo === 'cuota' ? { l: 'Cuota periódica (R)', v: R, f: 'money', main: true, sub: `${n} cuotas ${s.tipo}s ${p.adj}es` } : { l: 'Valor presente (VP)', v: VP, f: 'money', main: true, sub: `De ${n} cuotas de ${money(R)}` },
+      s.modo === 'cuota' ? { l: 'Valor presente (VP)', v: VP, f: 'money', sub: k ? `Saldo tras gracia: ${money(VP * d)}` : 'Monto financiado', tone: 'cyan' } : { l: 'Cuota (R)', v: R, f: 'money', sub: `${s.tipo[0].toUpperCase() + s.tipo.slice(1)} · ${p.adj}`, tone: 'cyan' },
+      { l: 'Valor futuro (VF)', v: VF, f: 'money', sub: `Al final de la cuota ${n}`, tone: 'violet' },
+      { l: 'Total intereses', v: intereses, f: 'money', sub: `${pct(share, 1)} del total pagado`, tone: share > .5 ? 'rose' : 'amber' }
+    ];
+    const tone = share < .25 ? 'good' : share < .5 ? 'warn' : 'bad';
+    const insights = [
+      s.modo === 'cuota'
+        ? `Para pagar un préstamo de ${hl(money(VP), 'c')} en ${hl(n + ' cuotas ' + s.tipo + 's')} al ${pct(i, 2)} ${p.adj}${k ? ` con ${k} ${k === 1 ? p.s : p.p} de gracia` : ''}, la cuota fija es ${hl(money(R), 'g')}.`
+        : `Una serie de ${n} cuotas ${s.tipo}s de ${hl(money(R), 'c')} al ${pct(i, 2)} ${p.adj} equivale hoy a ${hl(money(VP), 'g')} y acumula ${hl(money(VF))} al final.`,
+      `En total se pagan ${hl(money(total))}, de los cuales ${hl(money(intereses), 'r')} son intereses (<strong>${pct(share, 1)}</strong>). ${tone === 'good' ? 'El costo financiero es moderado.' : tone === 'warn' ? 'El costo financiero es considerable: reducir el plazo disminuiría los intereses.' : 'Más de la mitad de lo pagado son intereses: el plazo o la tasa son muy altos.'}`,
+      firstPay && lastPay ? `En la primera cuota el <strong>${pct(firstPay.it / R, 1)}</strong> se destina a intereses; en la última, solo el <strong>${pct(lastPay.it / R, 1)}</strong>. ${cross !== null ? `El abono a capital supera al interés desde el ${p.s} ${hl(cross)}.` : 'El interés supera al abono a capital durante todo el plazo.'}` : '',
+      `Si la anualidad fuera <strong>${ant ? 'vencida' : 'anticipada'}</strong>, la cuota equivalente sería ${hl(money(Ralt), 'a')} (${ant ? 'mayor' : 'menor'}, porque ${ant ? 'los pagos se harían un periodo después' : 'cada pago se adelanta un periodo y genera menos interés'}).`,
+      k > 0 ? `Los ${k} ${p.p} de gracia capitalizan intereses: la deuda crece a ${hl(money(VP * d), 'r')} antes del primer pago, lo que encarece la cuota en ${hl(money(R - Rng), 'r')} frente a pagar sin gracia.`
+            : `El valor futuro ${hl(money(VF))} es lo que se acumularía si, en lugar de pagar una deuda, se ahorraran estas mismas cuotas a la misma tasa.`
+    ].filter(Boolean);
+    const fA = T`\left[\frac{1-(1+i)^{-n}}{i}\right]`;
+    const steps = [
+      { d: 'Factor de valor presente de la anualidad.', tex: T`a_{n|i} = \frac{1-(1+${tn(i, 4)})^{-${n}}}{${tn(i, 4)}} = ${tn(a, 6)}` },
+      s.modo === 'cuota'
+        ? { d: `Se despeja la cuota${ant ? ' anticipada' : ''}${k ? ' diferida' : ''}.`, tex: T`R = \frac{VP${k ? '(1+i)^{k}' : ''}}{${fA}${ant ? '(1+i)' : ''}} = \frac{${tm(VP)}${k ? T`\times ${tn(d, 6)}` : ''}}{${tn(a, 6)}${ant ? T`\times ${tn(1 + i, 4)}` : ''}} = \boxed{${tm(R)}}` }
+        : { d: `Valor presente de la anualidad${ant ? ' anticipada' : ''}${k ? ' diferida' : ''}.`, tex: T`VP = R${fA}${ant ? '(1+i)' : ''}${k ? '(1+i)^{-k}' : ''} = ${tm(R)}\times ${tn(a, 6)}${ant ? T`\times ${tn(1 + i, 4)}` : ''}${k ? T`\div ${tn(d, 6)}` : ''} = \boxed{${tm(VP)}}` },
+      { d: 'Factor de valor futuro y VF de la serie.', tex: T`VF = R\left[\frac{(1+i)^{n}-1}{i}\right]${ant ? '(1+i)' : ''} = ${tm(R)}\times ${tn(sf, 6)}${ant ? T`\times ${tn(1 + i, 4)}` : ''} = ${tm(VF)}` },
+      { d: 'Intereses totales pagados.', tex: T`I = nR - VP = ${n}\times ${tm(R)} - ${tm(VP)} = ${tm(intereses)}` }
+    ];
+    return {
+      kpis, insights, steps, spark: sal,
+      verdict: { tone, title: `Cuota de ${money(R)} por ${n} ${p.p}`, text: `Los intereses son el ${pct(share, 1)} de lo pagado · Costo ${tone === 'good' ? 'moderado' : tone === 'warn' ? 'considerable' : 'elevado'}.` },
+      chart1: {
+        title: 'Evolución del saldo de la deuda',
+        note: `El saldo disminuye lentamente al inicio y más rápido al final, porque cada cuota abona más a capital a medida que bajan los intereses.${k ? ' Durante la gracia el saldo crece.' : ''}`,
+        cfg: { type: 'line', data: { labels: lab, datasets: [
+          { label: 'Saldo de la deuda', data: sal, borderColor: C.cyan, backgroundColor: rgba(C.cyan, .08), fill: true, tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5 },
+          { label: 'Intereses acumulados', data: cumI, borderColor: C.rose, borderWidth: 2, borderDash: [6, 5], pointRadius: 0, tension: .3 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      chart2: {
+        title: 'Composición de cada cuota',
+        note: 'Cada barra es una cuota: la parte roja paga intereses y la verde reduce la deuda. Con el tiempo la porción de capital crece.',
+        cfg: { type: 'bar', data: { labels: lab, datasets: [
+          { label: 'Abono a capital', data: abS.map((x, j) => rows[j][3] ? Math.max(x, 0) : 0), backgroundColor: rgba(C.emerald, .85), borderRadius: 1, maxBarThickness: 22 },
+          { label: 'Intereses', data: intS.map((x, j) => rows[j][3] ? Math.min(x, R) : 0), backgroundColor: rgba(C.rose, .85), borderRadius: 1, maxBarThickness: 22 }
+        ] }, options: opts({ stacked: true, xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      table: { title: 'Tabla de amortización', cols: [p.s[0].toUpperCase() + p.s.slice(1), 'Saldo inicial', 'Interés', 'Cuota', 'Abono a capital', 'Saldo final'], fmt: ['int', 'money', 'money', 'money', 'money', 'money'], rows, foot: ['Total', '', rows.reduce((x, r) => x + r[2], 0), total, rows.reduce((x, r) => x + r[4], 0), ''] }
+    };
+  }
+};
+
+/* ---------- 4. Gradiente aritmético ---------- */
+MODS.garit = {
+  num: '04', icon: 'stairs', title: 'Gradiente aritmético', short: 'Variación constante en $', tag: 'Series variables lineales',
+  desc: 'Serie de pagos que aumenta o disminuye en una cantidad fija G cada periodo. Calcula su valor presente, valor futuro y la cuota uniforme equivalente.',
+  chips: ['Creciente', 'Decreciente', 'Anualidad equivalente'],
+  formula: T`VP = A\left[\frac{1-(1+i)^{-n}}{i}\right] \pm \frac{G}{i}\left[\frac{1-(1+i)^{-n}}{i}-\frac{n}{(1+i)^{n}}\right]`,
+  legend: '<b>A</b> primera cuota · <b>G</b> variación constante por periodo · <b>i</b> tasa por periodo · <b>n</b> número de cuotas · cuota<sub>t</sub> = A ± (t−1)G',
+  fields: [
+    { k: 'A', t: 'money', l: 'Primera cuota (A)', min: 50000, max: 20000000, step: 10000 },
+    { k: 'G', t: 'money', l: 'Gradiente (G)', min: 0, max: 2000000, step: 5000 },
+    { k: 'dir', t: 'seg', l: 'Dirección', o: [['creciente', 'Creciente'], ['decreciente', 'Decreciente']] },
+    { k: 'i', t: 'pct', l: 'Tasa efectiva periódica (i)', min: 0.1, max: 8, step: 0.05 },
+    { k: 'n', t: 'int', l: 'Número de cuotas (n)', min: 2, max: 120, step: 1 },
+    { k: 'per', t: 'select', l: 'Periodicidad', o: PER_OPTS }
+  ],
+  compute(s) {
+    const p = PER[s.per], i = s.i / 100, n = Math.round(s.n), A = +s.A, G = +s.G, up = s.dir === 'creciente', g = up ? G : -G;
+    if (!(i > 0)) return err('La tasa debe ser mayor que cero.');
+    if (!(n >= 2)) return err('Un gradiente requiere al menos 2 cuotas.');
+    if (!(A > 0) || !(G >= 0)) return err('La primera cuota debe ser positiva y el gradiente no puede ser negativo.');
+    const a = annuityPV(n, i), vn = Math.pow(1 + i, -n);
+    const VPA = A * a, VPG = (g / i) * (a - n * vn), VP = VPA + VPG, VF = VP * Math.pow(1 + i, n), Aeq = VP / a;
+    const last = A + (n - 1) * g, sum = n * A + g * n * (n - 1) / 2;
+    const lab = [], cu = [], vpc = [], cumN = [], cumV = [], rows = [];
+    let cN = 0, cV = 0, over = null;
+    for (let t = 1; t <= n; t++) {
+      const c = A + (t - 1) * g, fct = Math.pow(1 + i, -t), v = c * fct;
+      cN += c; cV += v;
+      lab.push(t); cu.push(c); vpc.push(v); cumN.push(cN); cumV.push(cV);
+      rows.push([t, c, t === 1 ? 0 : g, fct, v, cV]);
+      if (over === null && (up ? c > Aeq : c < Aeq)) over = t;
+    }
+    const neg = last < 0;
+    const kpis = [
+      { l: 'Valor presente (VP)', v: VP, f: 'money', main: true, sub: `De ${n} cuotas ${up ? 'crecientes' : 'decrecientes'}` },
+      { l: 'Valor futuro (VF)', v: VF, f: 'money', sub: `Al final del ${p.s} ${n}`, tone: 'violet' },
+      { l: 'Última cuota', v: last, f: 'money', sub: `A ${up ? '+' : '−'} (n−1)G`, tone: neg ? 'rose' : 'cyan' },
+      { l: 'Cuota uniforme equivalente', v: Aeq, f: 'money', sub: 'Anualidad con el mismo VP', tone: 'amber' }
+    ];
+    const insights = [
+      `La serie inicia en ${hl(money(A), 'c')} y ${up ? 'aumenta' : 'disminuye'} ${hl(money(G))} cada ${p.s}, hasta llegar a ${hl(money(last), neg ? 'r' : 'g')} en la cuota ${n}.`,
+      `El VP de ${hl(money(VP), 'g')} se compone de ${hl(money(VPA))} de la parte uniforme (A) ${up ? 'más' : 'menos'} ${hl(money(Math.abs(VPG)))} del gradiente (G). El gradiente ${up ? 'aporta' : 'resta'} el <strong>${pct(Math.abs(VPG) / VPA, 1)}</strong> respecto a la base.`,
+      `Aunque nominalmente se pagan ${hl(money(sum))}, a valor presente equivalen a ${money(VP)}: el valor del dinero en el tiempo descuenta ${hl(money(sum - VP), 'a')} (${pct((sum - VP) / sum, 1)}).`,
+      `Pagar ${hl(money(Aeq), 'a')} fijos cada ${p.s} sería <strong>financieramente equivalente</strong> a esta serie. ${over ? `Las cuotas ${up ? 'superan' : 'quedan por debajo de'} ese valor a partir del ${p.s} ${over}.` : ''}`,
+      `El valor futuro ${hl(money(VF))} representa lo acumulado al final del ${p.s} ${n} si cada cuota se reinvierte al ${pct(i, 2)} ${p.adj}.`
+    ];
+    if (neg) insights.unshift(`<strong>Atención:</strong> con un gradiente decreciente de ${money(G)} la cuota se vuelve negativa antes del ${p.s} ${n}. Reduce G o el número de cuotas para que la serie tenga sentido financiero.`);
+    const steps = [
+      { d: 'Valor presente de la parte uniforme (A).', tex: T`VP_A = A\left[\frac{1-(1+i)^{-n}}{i}\right] = ${tm(A)}\times ${tn(a, 6)} = ${tm(VPA)}` },
+      { d: 'Valor presente del gradiente (G).', tex: T`VP_G = \frac{G}{i}\left[${tn(a, 6)} - \frac{${n}}{(1+${tn(i, 4)})^{${n}}}\right] = \frac{${tm(G)}}{${tn(i, 4)}}\times ${tn(a - n * vn, 6)} = ${tm(Math.abs(VPG))}` },
+      { d: `Valor presente total (${up ? 'creciente: se suma' : 'decreciente: se resta'}).`, tex: T`VP = ${tm(VPA)} ${up ? '+' : '-'} ${tm(Math.abs(VPG))} = \boxed{${tm(VP)}}` },
+      { d: 'Valor futuro equivalente.', tex: T`VF = VP(1+i)^n = ${tm(VP)}\times ${tn(Math.pow(1 + i, n), 6)} = ${tm(VF)}` },
+      { d: 'Cuota uniforme equivalente.', tex: T`A_{eq} = A ${up ? '+' : '-'} G\left[\frac{1}{i}-\frac{n}{(1+i)^n-1}\right] = ${tm(Aeq)}` },
+      { d: 'Última cuota de la serie.', tex: T`A_n = A ${up ? '+' : '-'} (n-1)G = ${tm(A)} ${up ? '+' : '-'} ${n - 1}\times ${tm(G)} = ${tm(last)}` }
+    ];
+    return {
+      kpis, insights, steps, spark: cu,
+      verdict: neg ? { tone: 'bad', title: 'Serie inconsistente', text: 'Hay cuotas negativas: revisa el gradiente o el plazo.' }
+                   : { tone: 'info', title: `VP de ${money(VP)}`, text: `Equivale a pagar ${money(Aeq)} fijos durante ${n} ${p.p}.` },
+      chart1: {
+        title: 'Flujo de cuotas y su valor presente',
+        note: 'Las barras azules son las cuotas nominales; las verde azuladas, su valor presente. La línea naranja punteada es la cuota uniforme equivalente.',
+        cfg: { type: 'bar', data: { labels: lab, datasets: [
+          { type: 'line', label: 'Cuota uniforme equivalente', data: lab.map(() => Aeq), borderColor: C.amber, borderDash: [6, 5], borderWidth: 2, pointRadius: 0 },
+          { label: 'Cuota nominal', data: cu, backgroundColor: C.cyan, borderRadius: 2, maxBarThickness: 26 },
+          { label: 'VP de la cuota', data: vpc, backgroundColor: C.violet, borderRadius: 2, maxBarThickness: 26 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      chart2: {
+        title: 'Suma nominal vs. valor presente acumulado',
+        note: 'La brecha creciente entre las dos curvas es el efecto del descuento: cuanto más lejana la cuota, menos vale hoy.',
+        cfg: { type: 'line', data: { labels: lab, datasets: [
+          { label: 'Suma nominal acumulada', data: cumN, borderColor: C.cyan, borderWidth: 2, pointRadius: 0, tension: .25 },
+          { label: 'VP acumulado', data: cumV, borderColor: C.emerald, backgroundColor: rgba(C.emerald, .08), fill: true, borderWidth: 2, pointRadius: 0, tension: .25 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      table: { title: 'Tabla del gradiente aritmético', cols: [p.s[0].toUpperCase() + p.s.slice(1), 'Cuota', 'Variación', 'Factor (1+i)⁻ᵗ', 'VP de la cuota', 'VP acumulado'], fmt: ['int', 'money', 'money', 'num6', 'money', 'money'], rows, foot: ['Total', sum, '', '', VP, VP] }
+    };
+  }
+};
+
+/* ---------- 5. Gradiente geométrico ---------- */
+MODS.ggeo = {
+  num: '05', icon: 'curve', title: 'Gradiente geométrico', short: 'Variación porcentual', tag: 'Series variables exponenciales',
+  desc: 'Serie de pagos que crece o decrece en un porcentaje constante g cada periodo, como salarios indexados, arriendos o cuotas ajustadas por inflación.',
+  chips: ['Crecimiento %', 'Indexación', 'Comparación con aritmético'],
+  formula: T`VP = A\,\frac{1-\left(\frac{1+g}{1+i}\right)^{n}}{i-g}\quad (i\neq g) \qquad VP=\frac{nA}{1+i}\quad(i=g)`,
+  legend: '<b>A</b> primera cuota · <b>g</b> tasa de crecimiento por periodo · <b>i</b> tasa de interés · <b>n</b> número de cuotas · cuota<sub>t</sub> = A(1±g)<sup>t−1</sup>',
+  fields: [
+    { k: 'A', t: 'money', l: 'Primera cuota (A)', min: 50000, max: 20000000, step: 10000 },
+    { k: 'g', t: 'pct', l: 'Tasa de variación (g)', min: 0, max: 20, step: 0.1 },
+    { k: 'dir', t: 'seg', l: 'Dirección', o: [['creciente', 'Creciente'], ['decreciente', 'Decreciente']] },
+    { k: 'i', t: 'pct', l: 'Tasa efectiva periódica (i)', min: 0.1, max: 8, step: 0.05 },
+    { k: 'n', t: 'int', l: 'Número de cuotas (n)', min: 2, max: 120, step: 1 },
+    { k: 'per', t: 'select', l: 'Periodicidad', o: PER_OPTS }
+  ],
+  compute(s) {
+    const p = PER[s.per], i = s.i / 100, n = Math.round(s.n), A = +s.A, up = s.dir === 'creciente', g = (up ? 1 : -1) * s.g / 100;
+    if (!(i > 0)) return err('La tasa debe ser mayor que cero.');
+    if (!(n >= 2)) return err('Un gradiente requiere al menos 2 cuotas.');
+    if (!(A > 0)) return err('La primera cuota debe ser positiva.');
+    if (!(g > -1)) return err('Un gradiente decreciente debe ser menor al 100%.');
+    const same = Math.abs(i - g) < 1e-10;
+    const VP = same ? n * A / (1 + i) : A * (1 - Math.pow((1 + g) / (1 + i), n)) / (i - g);
+    const VF = VP * Math.pow(1 + i, n), a = annuityPV(n, i), Aeq = VP / a, last = A * Math.pow(1 + g, n - 1);
+    const sum = g === 0 ? n * A : A * (Math.pow(1 + g, n) - 1) / g;
+    const Gar = A * g, VPar = A * a + (Gar / i) * (a - n * Math.pow(1 + i, -n));
+    const lab = [], cu = [], vpc = [], ar = [], rows = [];
+    let cV = 0;
+    for (let t = 1; t <= n; t++) {
+      const c = A * Math.pow(1 + g, t - 1), fct = Math.pow(1 + i, -t), v = c * fct;
+      cV += v; lab.push(t); cu.push(c); vpc.push(v); ar.push(A + (t - 1) * Gar);
+      rows.push([t, c, t === 1 ? 0 : c - cu[t - 2], fct, v, cV]);
+    }
+    const kpis = [
+      { l: 'Valor presente (VP)', v: VP, f: 'money', main: true, sub: `De ${n} cuotas ${up ? 'crecientes' : 'decrecientes'} ${pct(Math.abs(g), 1)}` },
+      { l: 'Valor futuro (VF)', v: VF, f: 'money', sub: `Al final del ${p.s} ${n}`, tone: 'violet' },
+      { l: 'Última cuota', v: last, f: 'money', sub: `${nf(Math.pow(1 + g, n - 1), 3)}× la primera cuota`, tone: 'cyan' },
+      { l: 'Cuota uniforme equivalente', v: Aeq, f: 'money', sub: 'Anualidad con el mismo VP', tone: 'amber' }
+    ];
+    const rel = same ? `Como <strong>g = i</strong>, el crecimiento compensa exactamente el descuento: cada cuota vale lo mismo hoy, ${hl(money(A / (1 + i)))}, y se aplica la fórmula especial VP = nA/(1+i).`
+      : g > i ? `Como el crecimiento (${pct(g, 2)}) <strong>supera</strong> la tasa (${pct(i, 2)}), cada cuota futura vale más a valor presente que la anterior: los últimos pagos pesan más en el VP.`
+      : `Como la tasa (${pct(i, 2)}) <strong>supera</strong> el crecimiento (${pct(g, 2)}), el descuento domina: cada cuota futura aporta menos al VP que la anterior.`;
+    const insights = [
+      `La serie inicia en ${hl(money(A), 'c')} y ${up ? 'crece' : 'decrece'} ${hl(pct(Math.abs(g), 2))} cada ${p.s}; la última cuota es ${hl(money(last), 'g')}, es decir <strong>${nf(Math.pow(1 + g, n - 1), 3)} veces</strong> la primera.`,
+      rel,
+      `Nominalmente se pagan ${hl(money(sum))}, pero a valor presente equivalen a ${hl(money(VP), 'g')}; el descuento financiero es de ${hl(money(sum - VP), 'a')}.`,
+      `Comparado con un gradiente <strong>aritmético</strong> que ${up ? 'sube' : 'baja'} ${money(Math.abs(Gar))} fijos (el mismo primer incremento), el geométrico ${up ? 'termina más alto' : 'cae más despacio'} y su VP es ${hl(money(VP - VPar), VP >= VPar ? 'g' : 'r')} ${VP >= VPar ? 'mayor' : 'menor'} (${money(VPar)}).`,
+      `Una cuota fija de ${hl(money(Aeq), 'a')} durante ${n} ${p.p} sería financieramente equivalente a esta serie.`
+    ];
+    const steps = [
+      same ? { d: 'Caso especial i = g.', tex: T`VP = \frac{nA}{1+i} = \frac{${n}\times ${tm(A)}}{${tn(1 + i, 4)}} = \boxed{${tm(VP)}}` }
+           : { d: 'Se reemplazan los valores en la fórmula (i ≠ g).', tex: T`VP = ${tm(A)}\cdot\frac{1-\left(\frac{${tn(1 + g, 4)}}{${tn(1 + i, 4)}}\right)^{${n}}}{${tn(i, 4)}-(${tn(g, 4)})}` },
+      same ? { d: 'Factor de crecimiento.', tex: T`\frac{1+g}{1+i} = 1` }
+           : { d: 'Se calcula el cociente elevado a n.', tex: T`\left(\frac{${tn(1 + g, 4)}}{${tn(1 + i, 4)}}\right)^{${n}} = ${tn(Math.pow((1 + g) / (1 + i), n), 6)} \Rightarrow VP = \boxed{${tm(VP)}}` },
+      { d: 'Valor futuro equivalente.', tex: T`VF = VP(1+i)^n = ${tm(VP)}\times ${tn(Math.pow(1 + i, n), 6)} = ${tm(VF)}` },
+      { d: 'Última cuota de la serie.', tex: T`A_n = A(1+g)^{n-1} = ${tm(A)}\times(${tn(1 + g, 4)})^{${n - 1}} = ${tm(last)}` },
+      { d: 'Cuota uniforme equivalente.', tex: T`A_{eq} = \frac{VP}{a_{n|i}} = \frac{${tm(VP)}}{${tn(a, 6)}} = ${tm(Aeq)}` }
+    ];
+    return {
+      kpis, insights, steps, spark: cu,
+      verdict: { tone: g > i ? 'warn' : 'info', title: `VP de ${money(VP)}`, text: g > i ? 'El crecimiento supera la tasa: las cuotas finales dominan el valor de la serie.' : `Equivale a pagar ${money(Aeq)} fijos durante ${n} ${p.p}.` },
+      chart1: {
+        title: 'Flujo de cuotas y su valor presente',
+        note: 'Las cuotas cambian en forma exponencial. Las barras verde azuladas muestran cuánto vale hoy cada pago; la línea naranja punteada es la cuota uniforme equivalente.',
+        cfg: { type: 'bar', data: { labels: lab, datasets: [
+          { type: 'line', label: 'Cuota uniforme equivalente', data: lab.map(() => Aeq), borderColor: C.amber, borderDash: [6, 5], borderWidth: 2, pointRadius: 0 },
+          { label: 'Cuota nominal', data: cu, backgroundColor: C.pink, borderRadius: 2, maxBarThickness: 26 },
+          { label: 'VP de la cuota', data: vpc, backgroundColor: C.violet, borderRadius: 2, maxBarThickness: 26 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      chart2: {
+        title: 'Geométrico vs. aritmético vs. uniforme',
+        note: `El gradiente geométrico (${pct(Math.abs(g), 1)}) se compara con un aritmético de ${money(Math.abs(Gar))} y con una cuota fija de ${money(A)}. El crecimiento porcentual se acelera con el tiempo.`,
+        cfg: { type: 'line', data: { labels: lab, datasets: [
+          { label: 'Geométrico', data: cu, borderColor: C.pink, backgroundColor: rgba(C.pink, .08), fill: true, borderWidth: 2, pointRadius: 0, tension: .3 },
+          { label: 'Aritmético', data: ar, borderColor: C.cyan, borderWidth: 2, pointRadius: 0 },
+          { label: 'Uniforme', data: lab.map(() => A), borderColor: C.amber, borderDash: [6, 5], borderWidth: 2, pointRadius: 0 }
+        ] }, options: opts({ xTitle: p.p[0].toUpperCase() + p.p.slice(1) }) }
+      },
+      table: { title: 'Tabla del gradiente geométrico', cols: [p.s[0].toUpperCase() + p.s.slice(1), 'Cuota', 'Variación', 'Factor (1+i)⁻ᵗ', 'VP de la cuota', 'VP acumulado'], fmt: ['int', 'money', 'money', 'num6', 'money', 'money'], rows, foot: ['Total', sum, '', '', VP, VP] }
+    };
+  }
+};
+
+/* ---------- 6. VPN y TIR ---------- */
+function npv(rate, Io, F) { let v = -Io; for (let t = 0; t < F.length; t++) v += F[t] / Math.pow(1 + rate, t + 1); return v; }
+function irr(Io, F) {
+  let lo = -0.99, flo = npv(lo, Io, F);
+  for (let r = -0.98; r <= 20; r += r < 1 ? 0.005 : 0.05) {
+    const fr = npv(r, Io, F);
+    if (Math.sign(fr) !== Math.sign(flo)) {
+      let a = lo, b = r, fa = flo;
+      for (let k = 0; k < 200; k++) { const mid = (a + b) / 2, fm = npv(mid, Io, F); if (Math.sign(fm) === Math.sign(fa)) { a = mid; fa = fm; } else b = mid; }
+      return (a + b) / 2;
+    }
+    lo = r; flo = fr;
+  }
+  return NaN;
+}
+function payback(Io, vals) {
+  let cum = -Io;
+  for (let t = 0; t < vals.length; t++) { const nx = cum + vals[t]; if (nx >= 0 && vals[t] > 0) return t + (-cum) / vals[t]; cum = nx; }
+  return NaN;
+}
+MODS.vpn = {
+  num: '06', icon: 'target', title: 'Valor presente neto (VPN)', short: 'Evaluación de proyectos', tag: 'Decisiones de inversión',
+  desc: 'Lleva todos los flujos de un proyecto a pesos de hoy con la tasa de oportunidad (TIO) y les resta la inversión. Complementa con TIR, TIRM, relación beneficio/costo y periodo de recuperación.',
+  chips: ['VPN', 'TIR', 'TIRM', 'B/C', 'Payback descontado'],
+  formula: T`VPN = -I_0 + \sum_{t=1}^{n}\frac{F_t}{(1+TIO)^{t}}`,
+  legend: '<b>I₀</b> inversión inicial · <b>F<sub>t</sub></b> flujo neto del año t · <b>TIO</b> tasa de oportunidad · <b>TIR</b> tasa que hace VPN = 0',
+  fields: [
+    { k: 'Io', t: 'money', l: 'Inversión inicial (I₀)', min: 1000000, max: 500000000, step: 1000000 },
+    { k: 'tio', t: 'pct', l: 'Tasa de oportunidad (TIO)', min: 1, max: 40, step: 0.25 },
+    { k: 'flujos', t: 'flows', l: 'Flujos netos por año' }
+  ],
+  compute(s) {
+    const Io = +s.Io, r = s.tio / 100, F = s.flujos.map(Number), n = F.length;
+    if (!(Io > 0)) return err('La inversión inicial debe ser mayor que cero.');
+    if (!n) return err('Agrega al menos un flujo de caja.');
+    const VPN = npv(r, Io, F), tir = irr(Io, F), vpF = F.map((f, t) => f / Math.pow(1 + r, t + 1));
+    const sumVP = vpF.reduce((x, y) => x + y, 0), BC = sumVP / Io;
+    const pbS = payback(Io, F), pbD = payback(Io, vpF);
+    const pos = F.reduce((x, f, t) => x + (f > 0 ? f * Math.pow(1 + r, n - t - 1) : 0), 0);
+    const negPV = Io + F.reduce((x, f, t) => x + (f < 0 ? -f / Math.pow(1 + r, t + 1) : 0), 0);
+    const tirm = Math.pow(pos / negPV, 1 / n) - 1;
+    const good = VPN > 0.5, bad = VPN < -0.5;
+    const tone = good ? 'good' : bad ? 'bad' : 'warn';
+    const kpis = [
+      { l: 'Valor presente neto', v: VPN, f: 'money', main: true, sub: good ? 'El proyecto crea valor' : bad ? 'El proyecto destruye valor' : 'Indiferente' },
+      { l: 'Tasa interna de retorno', v: tir, f: 'pct', d: 2, sub: Number.isFinite(tir) ? `${tir > r ? '+' : '−'}${nf(Math.abs(tir - r) * 100, 2)} p.p. vs. TIO` : 'Sin cambio de signo', tone: Number.isFinite(tir) && tir > r ? 'emerald' : 'rose' },
+      { l: 'Relación beneficio/costo', v: BC, f: 'num', d: 3, sub: `$${nf(BC, 2)} por cada $1 invertido`, tone: BC >= 1 ? 'cyan' : 'rose' },
+      { l: 'Recuperación descontada', v: pbD, f: 'num', d: 2, u: ' años', sub: Number.isFinite(pbD) ? `Simple: ${nf(pbS, 2)} años` : 'No se recupera en el horizonte', tone: 'amber' }
+    ];
+    const insights = [
+      good ? `El proyecto <strong>crea valor</strong>: después de recuperar la inversión de ${hl(money(Io), 'c')} y remunerar el capital al ${pct(r, 2)} (TIO), genera un excedente de ${hl(money(VPN), 'g')} en pesos de hoy.`
+        : bad ? `El proyecto <strong>no es viable</strong> a una TIO de ${pct(r, 2)}: los flujos descontados (${money(sumVP)}) no alcanzan a cubrir la inversión de ${money(Io)}; faltan ${hl(money(-VPN), 'r')} en pesos de hoy.`
+        : `El VPN es prácticamente cero: el proyecto rinde exactamente la TIO; es <strong>indiferente</strong> realizarlo.`,
+      Number.isFinite(tir) ? `La TIR de ${hl(pct(tir, 2), tir > r ? 'g' : 'r')} ${tir > r ? 'supera' : 'es inferior a'} la TIO en <strong>${nf(Math.abs(tir - r) * 100, 2)} puntos porcentuales</strong>. Es la rentabilidad propia del proyecto y la tasa máxima que soporta antes de destruir valor.`
+        : 'No existe una TIR real: los flujos no cambian de signo frente a la inversión.',
+      `La relación beneficio/costo es ${hl(nf(BC, 3))}: por cada peso invertido se recuperan ${hl('$' + nf(BC, 2))} a valor presente${BC >= 1 ? ', con una ganancia neta de ' + nf((BC - 1) * 100, 1) + ' centavos' : ''}.`,
+      Number.isFinite(pbD) ? `La inversión se recupera en ${hl(nf(pbS, 2) + ' años')} sin descontar y en ${hl(nf(pbD, 2) + ' años', 'a')} considerando el valor del dinero en el tiempo, dentro de un horizonte de ${n} años.`
+        : `Considerando el valor del dinero en el tiempo, la inversión <strong>no se recupera</strong> dentro de los ${n} años evaluados.`,
+      good ? `<strong>Margen de seguridad:</strong> los flujos podrían caer hasta un ${hl(pct(VPN / sumVP, 1), 'a')} antes de que el VPN sea negativo; la inversión podría subir hasta ${money(sumVP)}.`
+           : `Para alcanzar el punto de equilibrio, los flujos tendrían que aumentar un ${hl(pct(-VPN / sumVP, 1), 'a')} o la inversión reducirse a ${money(sumVP)}.`,
+      `La TIRM, que supone reinversión de los flujos a la TIO, es ${hl(pct(tirm, 2))}: una medida más conservadora que la TIR${Number.isFinite(tir) ? ` (${pct(tir, 2)})` : ''}.`
+    ];
+    const terms = F.map((f, t) => T`\frac{${tm(f)}}{(${tn(1 + r, 4)})^{${t + 1}}}`);
+    const shown = n <= 4 ? terms.join(' + ') : [terms[0], terms[1], T`\cdots`, terms[n - 1]].join(' + ');
+    const steps = [
+      { d: 'Se descuentan los flujos con la TIO.', tex: T`VPN = -${tm(Io)} + ${shown}` },
+      { d: 'Suma de los flujos a valor presente.', tex: T`\sum VP = ${vpF.slice(0, 4).map(tm).join(' + ')}${n > 4 ? T` + \cdots` : ''} = ${tm(sumVP)}` },
+      { d: 'Valor presente neto.', tex: T`VPN = -${tm(Io)} + ${tm(sumVP)} = \boxed{${tm(VPN)}}` },
+      { d: 'TIR: tasa que hace el VPN igual a cero (método numérico).', tex: T`0 = -I_0 + \sum_{t=1}^{${n}}\frac{F_t}{(1+TIR)^t} \;\Rightarrow\; TIR = ${Number.isFinite(tir) ? pT(tir, 2) : T`\text{no existe}`}` },
+      { d: 'Relación beneficio/costo.', tex: T`B/C = \frac{\sum VP}{I_0} = \frac{${tm(sumVP)}}{${tm(Io)}} = ${tn(BC, 4)}` },
+      { d: 'TIR modificada (reinversión a la TIO).', tex: T`TIRM = \left(\frac{VF_{+}}{VP_{-}}\right)^{1/n}-1 = \left(\frac{${tm(pos)}}{${tm(negPV)}}\right)^{1/${n}}-1 = ${pT(tirm, 2)}` }
+    ];
+    const maxR = Math.max(Number.isFinite(tir) ? tir * 1.7 : 0, r * 2.2, 0.3);
+    const prof = Array.from({ length: 61 }, (_, j) => { const x = maxR * j / 60; return { x: x * 100, y: npv(x, Io, F) }; });
+    const cum = [-Io]; vpF.forEach(v => cum.push(cum[cum.length - 1] + v));
+    const lab = ['Año 0', ...F.map((_, t) => 'Año ' + (t + 1))];
+    const o1 = opts({ xLinear: true, xTitle: 'Tasa de descuento', xFmt: v => nf(v, 1) + '%' });
+    const rows = [[0, -Io, 1, -Io, -Io]];
+    F.forEach((f, t) => rows.push([t + 1, f, 1 / Math.pow(1 + r, t + 1), vpF[t], cum[t + 1]]));
+    return {
+      kpis, insights, steps, spark: cum,
+      verdict: { tone, title: good ? 'Proyecto viable' : bad ? 'Proyecto no viable' : 'Proyecto indiferente', text: good ? `VPN positivo de ${money(VPN)}: se recomienda ejecutar la inversión.` : bad ? `VPN negativo de ${money(VPN)}: se recomienda rechazar o reestructurar la inversión.` : 'El proyecto rinde exactamente la tasa de oportunidad.' },
+      chart1: {
+        title: 'Perfil del VPN según la tasa de descuento',
+        note: 'El VPN disminuye cuando aumenta la tasa. El punto donde la curva cruza el eje es la TIR; el punto naranja es el VPN a la TIO actual.',
+        cfg: { type: 'line', data: { datasets: [
+          { label: 'VPN', data: prof, borderColor: C.violet, backgroundColor: rgba(C.violet, .08), fill: 'origin', borderWidth: 2, pointRadius: 0, tension: .3 },
+          { label: 'VPN a la TIO', data: [{ x: r * 100, y: VPN }], borderColor: C.amber, backgroundColor: C.amber, pointRadius: 7, pointHoverRadius: 9, showLine: false },
+          { label: 'TIR', data: Number.isFinite(tir) && tir <= maxR ? [{ x: tir * 100, y: 0 }] : [], borderColor: C.emerald, backgroundColor: C.emerald, pointRadius: 7, pointHoverRadius: 9, pointStyle: 'rectRot', showLine: false }
+        ] }, options: o1 }
+      },
+      chart2: {
+        title: 'Flujos nominales, descontados y VP acumulado',
+        note: 'Las barras comparan cada flujo con su valor presente. La línea muestra el VP acumulado: cuando cruza cero se recupera la inversión.',
+        cfg: { type: 'bar', data: { labels: lab, datasets: [
+          { type: 'line', label: 'VP acumulado', data: cum, borderColor: C.amber, backgroundColor: C.amber, borderWidth: 2, pointRadius: 4, tension: .25 },
+          { label: 'Flujo nominal', data: [-Io, ...F], backgroundColor: [-Io, ...F].map(v => v < 0 ? rgba(C.rose, .85) : rgba(C.cyan, .85)), borderRadius: 2, maxBarThickness: 30 },
+          { label: 'Flujo descontado', data: [-Io, ...vpF], backgroundColor: [-Io, ...vpF].map(v => v < 0 ? rgba(C.rose, .45) : rgba(C.emerald, .85)), borderRadius: 2, maxBarThickness: 30 }
+        ] }, options: opts() }
+      },
+      table: { title: 'Flujo de caja descontado', cols: ['Año', 'Flujo neto', 'Factor 1/(1+TIO)ᵗ', 'VP del flujo', 'VP acumulado'], fmt: ['int', 'money', 'num6', 'money', 'money'], rows, foot: ['VPN', F.reduce((x, y) => x + y, 0) - Io, '', VPN, VPN] }
+    };
+  }
+};
+
+const ORDER = ['compuesto', 'conversion', 'anualidad', 'garit', 'ggeo', 'vpn'];
+
+/* =========================================================
+   INTERFAZ
+   ========================================================= */
+const charts = {};
+let current = 'resumen';
+
+function tex(el, s) {
+  if (window.katex) { try { katex.render(s, el, { displayMode: true, throwOnError: false }); return; } catch (e) { /* respaldo abajo */ } }
+  el.textContent = s; el.classList.add('tex-fallback');
+}
+function fmtVal(k, v) {
+  if (!Number.isFinite(v)) return '—';
+  if (k.f === 'money') return money(v);
+  if (k.f === 'pct') return pct(v, k.d ?? 2);
+  return nf(v, k.d ?? 0) + (k.u || '');
+}
+function countTo(el, k) {
+  const to = k.v, from = Number.isFinite(el._v) ? el._v : to;
+  el._v = to; cancelAnimationFrame(el._raf);
+  if (!Number.isFinite(to) || from === to) { el.textContent = fmtVal(k, to); return; }
+  const t0 = performance.now(), dur = 650;
+  const step = now => {
+    const p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmtVal(k, from + (to - from) * e);
+    if (p < 1) el._raf = requestAnimationFrame(step);
+  };
+  el._raf = requestAnimationFrame(step);
+}
+function setChart(id, cfg) {
+  const cv = document.getElementById(id);
+  if (!cv || !window.Chart) return;
+  const ch = charts[id];
+  if (ch && ch.config.type === cfg.type && ch.data.datasets.length === cfg.data.datasets.length) {
+    ch.data.labels = cfg.data.labels;
+    cfg.data.datasets.forEach((ds, j) => Object.assign(ch.data.datasets[j], ds));
+    ch.options = cfg.options; ch.update(); return;
+  }
+  if (ch) ch.destroy();
+  charts[id] = new Chart(cv, cfg);
+}
+function sparkSVG(arr, idx, color) {
+  const w = 300, h = 60, v = arr.filter(Number.isFinite);
+  if (v.length < 2) return '';
+  const mn = Math.min(...v), mx = Math.max(...v), rg = mx - mn || 1;
+  const pts = v.map((y, j) => [j / (v.length - 1) * w, h - 6 - (y - mn) / rg * (h - 12)]);
+  const line = pts.map(p => p.map(x => x.toFixed(1)).join(',')).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="M0,${h} L${line.replace(/ /g, ' L')} L${w},${h} Z" fill="${color}" fill-opacity=".08"/><polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.8" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+}
+
+/* ---------- Construcción de páginas ---------- */
+function buildNav() {
+  const item = (id, icon, title, sub, num) => `<button data-go="${id}"><span class="ni">${I[icon]}</span><span class="nt"><b>${title}</b><small>${sub}</small></span>${num ? `<span class="nn">${num}</span>` : ''}</button>`;
+  document.getElementById('nav').innerHTML =
+    `<div class="nav-label">General</div>` + item('resumen', 'grid', 'Resumen ejecutivo', 'Vista global de módulos') +
+    `<div class="nav-label">Módulos de análisis</div>` + ORDER.map(id => item(id, MODS[id].icon, MODS[id].title.replace(' de interés', '').replace('Valor presente neto (VPN)', 'VPN y TIR'), MODS[id].short, MODS[id].num)).join('');
+}
+function buildOverview() {
+  return `<section class="module" id="m-resumen">
+    <div class="hero card">
+      <div>
+        <span class="eyebrow">Proyecto académico · Matemáticas Financieras</span>
+        <h1>Dashboard de Matemáticas Financieras</h1>
+        <p>Seis herramientas de análisis que calculan, grafican e interpretan en tiempo real: interés compuesto, conversión de tasas, anualidades, gradientes aritmético y geométrico, y evaluación de proyectos con VPN y TIR.</p>
+        <div class="meta">
+          <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b></div>
+          <div><small>Institución</small><b>UNIMINUTO</b></div>
+          <div><small>Módulos</small><b>6 temas</b></div>
+          <div><small>Año</small><b>2026</b></div>
+        </div>
+      </div>
+      <div class="hero-viz" id="heroViz"></div>
+    </div>
+    <div class="sec-title">Módulos de análisis</div>
+    <div class="ov-grid" id="ovGrid"></div>
+    <div class="sec-title">Ruta conceptual del curso</div>
+    <div class="route">
+      <div><span>01</span><b>Interés compuesto</b><p>Base: el dinero cambia de valor en el tiempo.</p></div>
+      <div><span>02</span><b>Conversión de tasas</b><p>Expresar la misma tasa en distintos periodos.</p></div>
+      <div><span>03</span><b>Anualidades</b><p>Series de pagos iguales.</p></div>
+      <div><span>04</span><b>Gradiente aritmético</b><p>Pagos que varían en $ fijos.</p></div>
+      <div><span>05</span><b>Gradiente geométrico</b><p>Pagos que varían en % fijo.</p></div>
+      <div><span>06</span><b>VPN y TIR</b><p>Integrar todo para decidir inversiones.</p></div>
+    </div>
+    <div class="sec-title">Cómo usar el dashboard</div>
+    <div class="howto">
+      <div class="card"><span class="n">1</span><div><b>Elige un módulo</b><p>Desde el menú lateral o haciendo clic en cualquier tarjeta del resumen.</p></div></div>
+      <div class="card"><span class="n">2</span><div><b>Cambia los datos</b><p>Escribe valores o usa los deslizadores. Todo se recalcula al instante.</p></div></div>
+      <div class="card"><span class="n">3</span><div><b>Lee el análisis</b><p>Revisa el diagnóstico, el desarrollo paso a paso y exporta la tabla a CSV/Excel.</p></div></div>
+    </div>
+    <footer>Dashboard de Matemáticas Financieras · Diego Alejandro Clavijo Gutiérrez · UNIMINUTO 2026</footer>
+  </section>`;
+}
+function buildModule(id) {
+  const M = MODS[id];
+  const ch = n => `<div class="card chart-card"><div class="card-h"><span class="ic">${n === 1 ? I.chart : I.bars}</span><div><h3 id="c${n}t-${id}"></h3></div></div><div class="chart-wrap"><canvas id="c${n}-${id}"></canvas></div><p class="chart-note" id="c${n}n-${id}"></p></div>`;
+  return `<section class="module" id="m-${id}" hidden>
+    <div class="mod-hero card">
+      <div>
+        <span class="eyebrow">Módulo ${M.num} · ${M.tag}</span>
+        <h1>${M.title}</h1>
+        <p>${M.desc}</p>
+        <div class="chips">${M.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>
+      </div>
+      <div class="formula-box"><span class="fb-label">Fórmula fundamental</span><div class="fb-tex" id="f-${id}"></div><div class="fb-legend">${M.legend}</div></div>
+    </div>
+    <div class="mod-alert" id="al-${id}" hidden></div>
+    <div class="grid-main">
+      <div class="card params">
+        <div class="card-h"><span class="ic">${I.sliders}</span><div><h3>Parámetros</h3><p>Cambia los datos y todo se recalcula</p></div></div>
+        <div class="fields" id="fl-${id}"></div>
+        <button class="btn w100" data-reset="${id}">${I.reset} Restablecer valores</button>
+      </div>
+      <div class="main-col"><div class="kpis" id="k-${id}"></div>${ch(1)}</div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><div class="card-h"><span class="ic">${I.spark}</span><div><h3>Análisis e interpretación</h3><p>Diagnóstico automático de los resultados</p></div></div><div id="v-${id}"></div><ul class="insights" id="in-${id}"></ul></div>
+      ${ch(2)}
+    </div>
+    <div class="card" style="margin-bottom:22px"><div class="card-h"><span class="ic">${I.sigma}</span><div><h3>Desarrollo paso a paso</h3><p>Sustitución de los datos en las fórmulas</p></div></div><ol class="steps" id="st-${id}"></ol></div>
+    <div class="card"><div class="card-h between"><div style="display:flex;gap:12px;align-items:flex-start"><span class="ic">${I.table}</span><div><h3 id="tt-${id}"></h3><p>Detalle periodo a periodo con los parámetros actuales</p></div></div><button class="btn sm" data-csv="${id}">${I.download} <span>Exportar CSV</span></button></div><div class="table-wrap"><table id="t-${id}"></table></div></div>
+  </section>`;
+}
+
+/* ---------- Campos ---------- */
+function rangePct(f, v) { return Math.max(0, Math.min(100, (v - f.min) / (f.max - f.min) * 100)); }
+function fieldHTML(id, f) {
+  const v = S[id][f.k];
+  if (f.t === 'select') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="select"><select data-k="${f.k}">${f.o.map(([val, lab]) => `<option value="${val}" ${String(v) === String(val) ? 'selected' : ''}>${lab}</option>`).join('')}</select></div></div>`;
+  if (f.t === 'seg') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="seg">${f.o.map(([val, lab]) => `<button type="button" data-seg="${f.k}" data-val="${val}" class="${String(v) === String(val) ? 'on' : ''}">${lab}</button>`).join('')}</div></div>`;
+  if (f.t === 'flows') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="flows">${v.map((x, j) => `<div class="flow-row"><span class="yr">Año ${j + 1}</span><div class="num-wrap"><span>$</span><input type="number" inputmode="numeric" data-flow="${j}" value="${x}" step="100000"></div><button type="button" class="icon-btn" data-delflow="${j}" title="Eliminar año">${I.x}</button></div>`).join('')}</div><button type="button" class="btn sm w100 add-flow" data-addflow>${I.plus} Agregar año</button></div>`;
+  const pre = f.t === 'money' ? '$' : '', suf = f.t === 'pct' ? '%' : '';
+  return `<div class="field" data-f="${f.k}">
+    <div class="fl-top"><label>${f.l}</label><div class="num-wrap">${pre ? `<span>${pre}</span>` : ''}<input type="number" inputmode="decimal" data-k="${f.k}" value="${v}" step="${f.step}">${suf ? `<span>${suf}</span>` : ''}</div></div>
+    <input type="range" data-r="${f.k}" min="${f.min}" max="${f.max}" step="${f.step}" value="${v}" style="--p:${rangePct(f, v)}%">
+    <div class="fl-hint"><span>${f.t === 'money' ? compact(f.min) : nf(f.min, f.t === 'pct' ? 1 : 0) + suf}</span><span data-h="${f.k}">${f.t === 'money' ? money(+v) : ''}</span><span>${f.t === 'money' ? compact(f.max) : nf(f.max, f.t === 'pct' ? 1 : 0) + suf}</span></div>
+  </div>`;
+}
+function buildFields(id) {
+  document.getElementById('fl-' + id).innerHTML = MODS[id].fields.map(f => fieldHTML(id, f)).join('');
+  syncVisibility(id);
+}
+function syncVisibility(id) {
+  MODS[id].fields.forEach(f => {
+    const el = document.querySelector(`#fl-${id} [data-f="${f.k}"]`);
+    if (el) el.hidden = f.show ? !f.show(S[id]) : false;
+  });
+}
+function bindModule(id) {
+  const root = document.getElementById('m-' + id);
+  const fieldOf = k => MODS[id].fields.find(f => f.k === k);
+  const setNum = (k, raw, from) => {
+    const f = fieldOf(k); let v = parseFloat(raw);
+    if (!Number.isFinite(v)) return;
+    if (f.t === 'int') v = Math.round(v);
+    S[id][k] = v;
+    const rg = root.querySelector(`[data-r="${k}"]`), nb = root.querySelector(`[data-k="${k}"]`), h = root.querySelector(`[data-h="${k}"]`);
+    if (rg) { if (from !== 'range') rg.value = Math.max(f.min, Math.min(f.max, v)); rg.style.setProperty('--p', rangePct(f, v) + '%'); }
+    if (nb && from !== 'num') nb.value = v;
+    if (h && f.t === 'money') h.textContent = money(v);
+    schedule(id);
+  };
+  root.addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.r) setNum(t.dataset.r, t.value, 'range');
+    else if (t.dataset.k && t.type === 'number') setNum(t.dataset.k, t.value, 'num');
+    else if (t.dataset.flow !== undefined) { const v = parseFloat(t.value); if (Number.isFinite(v)) { S[id].flujos[+t.dataset.flow] = v; schedule(id); } }
+  });
+  root.addEventListener('change', e => {
+    const t = e.target;
+    if (t.tagName === 'SELECT') { S[id][t.dataset.k] = t.value; syncVisibility(id); schedule(id); }
+  });
+  root.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.seg) { S[id][b.dataset.seg] = b.dataset.val; b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); syncVisibility(id); schedule(id); }
+    else if (b.dataset.delflow !== undefined) { if (S[id].flujos.length > 1) { S[id].flujos.splice(+b.dataset.delflow, 1); buildFields(id); schedule(id); } }
+    else if (b.hasAttribute('data-addflow')) { if (S[id].flujos.length < 20) { const fl = S[id].flujos; fl.push(fl[fl.length - 1] || 10000000); buildFields(id); schedule(id); } }
+    else if (b.dataset.reset) resetModule(id);
+    else if (b.dataset.csv) exportCSV(id);
+  });
+}
+let pend = null;
+function schedule(id) { cancelAnimationFrame(pend); pend = requestAnimationFrame(() => render(id)); }
+
+/* ---------- Render ---------- */
+const VIC = { good: I.good, bad: I.bad, warn: I.warn, info: I.info };
+const VLAB = { good: 'Resultado favorable', bad: 'Resultado desfavorable', warn: 'Requiere atención', info: 'Resultado' };
+function render(id) {
+  if (id === 'resumen') return renderOverview();
+  const r = MODS[id].compute(S[id]);
+  const al = document.getElementById('al-' + id);
+  if (r.error) {
+    al.hidden = false; al.innerHTML = `${I.warn}<span>${r.error}</span>`;
+    document.getElementById('k-' + id).querySelectorAll('.kpi-v').forEach(el => { el.textContent = '—'; el._v = NaN; });
+    return;
+  }
+  al.hidden = true;
+  const kb = document.getElementById('k-' + id);
+  if (kb.children.length !== r.kpis.length) kb.innerHTML = r.kpis.map(() => `<div class="kpi"><div class="kpi-l"><i></i><span></span></div><div class="kpi-v"></div><div class="kpi-s"></div></div>`).join('');
+  r.kpis.forEach((k, j) => {
+    const el = kb.children[j];
+    el.className = `kpi ${k.main ? 'main' : 't-' + (k.tone || 'cyan')}`;
+    el.querySelector('.kpi-l span').textContent = k.l;
+    el.querySelector('.kpi-s').textContent = k.sub || '';
+    countTo(el.querySelector('.kpi-v'), k);
+  });
+  ['1', '2'].forEach(n => {
+    const c = r['chart' + n];
+    document.getElementById(`c${n}t-${id}`).textContent = c.title;
+    document.getElementById(`c${n}n-${id}`).textContent = c.note;
+    setChart(`c${n}-${id}`, c.cfg);
+  });
+  const v = r.verdict;
+  document.getElementById('v-' + id).innerHTML = `<div class="verdict v-${v.tone}"><div class="v-ic">${VIC[v.tone]}</div><div><small>${VLAB[v.tone]}</small><strong>${v.title}</strong><p>${v.text}</p></div></div>`;
+  document.getElementById('in-' + id).innerHTML = r.insights.map(x => `<li>${x}</li>`).join('');
+  const st = document.getElementById('st-' + id);
+  st.innerHTML = r.steps.map(() => `<li><div class="st-d"></div><div class="st-tex"></div></li>`).join('');
+  r.steps.forEach((s, j) => { const li = st.children[j]; li.querySelector('.st-d').textContent = s.d; tex(li.querySelector('.st-tex'), s.tex); });
+  renderTable(id, r.table);
+}
+function cell(fmt, v) {
+  if (v === '' || v === null || v === undefined) return '';
+  if (fmt === 'money') return money(v);
+  if (fmt === 'int') return nf(v);
+  if (fmt === 'pct4') return pct(v, 4);
+  if (fmt === 'num6') return nf(v, 6);
+  return v;
+}
+function renderTable(id, t) {
+  document.getElementById('tt-' + id).textContent = t.title;
+  const rows = t.rows.map((r, j) => `<tr class="${t.mark === j ? 'hl-row' : ''}">${r.map((v, c) => `<td class="${typeof v === 'number' && v < -0.5 && t.fmt[c] === 'money' ? 'neg' : ''}">${cell(t.fmt[c], v)}</td>`).join('')}</tr>`).join('');
+  const foot = t.foot ? `<tfoot><tr>${t.foot.map((v, c) => `<td>${typeof v === 'number' ? cell(t.fmt[c], v) : v}</td>`).join('')}</tr></tfoot>` : '';
+  document.getElementById('t-' + id).innerHTML = `<thead><tr>${t.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody>${foot}`;
+}
+function renderOverview() {
+  const colors = [C.cyan, C.cyan, C.cyan, C.cyan, C.cyan, C.cyan];
+  document.getElementById('ovGrid').innerHTML = ORDER.map((id, j) => {
+    const M = MODS[id], r = M.compute(S[id]);
+    const k = r.error ? null : r.kpis[0];
+    return `<div class="card ov-card" data-go="${id}" tabindex="0" role="button">
+      <div class="ov-top"><span class="ov-ic">${I[M.icon]}</span><div><small>Módulo ${M.num}</small><h4>${M.title}</h4></div></div>
+      <div class="ov-metric"><small>${k ? k.l : 'Sin datos válidos'}</small><div>${k ? fmtVal(k, k.v) : '—'}</div></div>
+      ${r.error ? '' : sparkSVG(r.spark, j, colors[j])}
+      <div class="ov-foot">${r.error ? '<span class="pill bad">Revisar datos</span>' : `<span class="pill ${r.verdict.tone}">${r.verdict.title.length > 30 ? VLAB[r.verdict.tone] : r.verdict.title}</span>`}<span class="go">Abrir ${I.arrow}</span></div>
+    </div>`;
+  }).join('');
+  const rv = MODS.vpn.compute(S.vpn), rc = MODS.compuesto.compute(S.compuesto);
+  const sp = rc.error ? [] : rc.spark;
+  document.getElementById('heroViz').innerHTML = `<div class="hv-top"><div><small>VPN del proyecto evaluado</small><div class="big">${rv.error ? '—' : money(rv.kpis[0].v)}</div></div>${rv.error ? '' : `<span class="up">TIR ${pct(rv.kpis[1].v, 2)}</span>`}</div>${sparkSVG(sp, 99, C.cyan)}`;
+}
+
+/* ---------- Navegación ---------- */
+function go(id) {
+  if (id !== 'resumen' && !MODS[id]) id = 'resumen';
+  current = id;
+  document.querySelectorAll('.module').forEach(s => s.hidden = s.id !== 'm-' + id);
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.go === id));
+  document.getElementById('crumb').textContent = id === 'resumen' ? 'Resumen ejecutivo' : MODS[id].title;
+  document.getElementById('btnReset').style.display = id === 'resumen' ? 'none' : '';
+  document.getElementById('btnCsv').style.display = id === 'resumen' ? 'none' : '';
+  if (history.replaceState) history.replaceState(null, '', '#' + id);
+  document.body.classList.remove('nav-open');
+  window.scrollTo(0, 0);
+  render(id);
+}
+function resetModule(id) { S[id] = clone(DEF[id]); buildFields(id); render(id); }
+function exportCSV(id) {
+  const r = MODS[id].compute(S[id]); if (r.error) return;
+  const t = r.table, esc = v => typeof v === 'number' ? v.toFixed(6).replace(/\.?0+$/, '').replace('.', ',') : `"${String(v).replace(/"/g, '""')}"`;
+  const lines = [t.cols.map(esc).join(';'), ...t.rows.map(row => row.map(esc).join(';'))];
+  if (t.foot) lines.push(t.foot.map(esc).join(';'));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${MODS[id].title.replace(/[^\wáéíóúñ ]/gi, '').trim().replace(/\s+/g, '_')}.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function isDark() {
+  const th = document.documentElement.dataset.theme;
+  return th ? th === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function applyTheme() {
+  if (window.Chart) { Chart.defaults.color = cssv('--muted'); Chart.defaults.borderColor = cssv('--line'); }
+  const b = document.getElementById('btnTheme'); if (b) b.innerHTML = isDark() ? I.sun : I.moon;
+}
+function init() {
+  if (window.Chart) {
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.font.size = 11.5;
+  }
+  applyTheme();
+  buildNav();
+  document.getElementById('main').innerHTML = buildOverview() + ORDER.map(buildModule).join('');
+  ORDER.forEach(id => { buildFields(id); bindModule(id); tex(document.getElementById('f-' + id), MODS[id].formula); });
+  document.getElementById('logo').innerHTML = I.logo;
+  document.getElementById('burger').innerHTML = I.menu;
+  document.getElementById('crumbSep').innerHTML = I.chev;
+  document.getElementById('btnReset').innerHTML = `${I.reset}<span>Restablecer</span>`;
+  document.getElementById('btnCsv').innerHTML = `${I.download}<span>Exportar tabla</span>`;
+  document.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) go(g.dataset.go); });
+  document.getElementById('burger').onclick = () => document.body.classList.toggle('nav-open');
+  document.getElementById('scrim').onclick = () => document.body.classList.remove('nav-open');
+  document.getElementById('btnReset').onclick = () => resetModule(current);
+  document.getElementById('btnCsv').onclick = () => exportCSV(current);
+  document.getElementById('btnTheme').onclick = () => {
+    const next = isDark() ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) { /* sin almacenamiento */ }
+    applyTheme(); render(current);
+  };
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { if (!document.documentElement.dataset.theme) { applyTheme(); render(current); } });
+  document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.ov-card')) { e.preventDefault(); go(e.target.dataset.go); } });
+  let wasSmall = window.innerWidth < 600, rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const sm = window.innerWidth < 600; if (sm !== wasSmall) { wasSmall = sm; render(current); } }, 200); });
+  go((location.hash || '#resumen').slice(1));
+}
+if (typeof document !== 'undefined') init();
+</script>
+</body>
+</html>
