@@ -186,15 +186,15 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(-
 
 /* KPIs */
 .kpis{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:14px}
-.kpi{position:relative;padding:16px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0}
+.kpi{position:relative;container-type:inline-size;padding:16px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0}
 .kpi-l{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:7px}
 .kpi-l i{width:8px;height:8px;border-radius:2px;background:var(--tcs,var(--accent));flex-shrink:0}
-.kpi-v{font-family:var(--mono);font-size:20px;font-weight:600;letter-spacing:-.02em;margin:8px 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-v{font-family:var(--mono);font-size:min(20px,12.5cqi);font-weight:600;letter-spacing:-.02em;margin:8px 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi-s{font-size:11.5px;color:var(--muted);line-height:1.4}
 .kpi.main{background:var(--accent);border-color:var(--accent);color:#fff}
 .kpi.main .kpi-l,.kpi.main .kpi-s{color:rgba(255,255,255,.78)}
 .kpi.main .kpi-l i{background:#fff}
-.kpi.main .kpi-v{font-size:21px}
+.kpi.main .kpi-v{font-size:min(22px,12.5cqi)}
 .t-cyan{--tcs:#2563eb}
 .t-violet{--tcs:#0d9488}
 .t-emerald{--tcs:#16a34a}
@@ -296,6 +296,64 @@ tr.hl-row td{background:var(--good-soft);color:var(--good)}
 .howto p{font-size:12.5px;color:var(--muted)}
 footer{text-align:center;color:var(--dim);font-size:12px;padding:26px 0 0}
 
+/* ---------- Casos reales (quiz) ---------- */
+.q-score{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.q-score .big{font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:-.02em;margin-top:4px}
+.q-score .big small{font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0}
+.q-bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:10px 0 8px}
+.q-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .3s}
+.q-meta{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-bottom:14px}
+.q-tabs{display:flex;flex-wrap:wrap;gap:6px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:16px;scroll-margin-top:80px}
+.q-tabs button{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.q-tabs button:hover{color:var(--text);border-color:var(--line-2)}
+.q-tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.q-tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.q-tabs button svg{width:15px;height:15px;flex-shrink:0}
+.q-cnt{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:4px;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.q-cnt.full{background:var(--good-soft);color:var(--good);border-color:var(--good-line)}
+.q-tabs button.on .q-cnt{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+#qFinal .verdict{margin-bottom:16px}
+.q-list{display:flex;flex-direction:column;gap:16px}
+.q-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.q-tag{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text)}
+.q-case h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.q-ctx{font-size:13.5px;color:var(--muted);max-width:860px}
+.q-data{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.q-data span{font-size:12px;padding:5px 10px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.q-data b{font-family:var(--mono);font-weight:600;color:var(--text);margin-left:6px}
+.q-q{font-size:14px;font-weight:600;margin:4px 0 12px}
+.q-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.q-opt{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;cursor:pointer;background:var(--surface);color:var(--text);transition:border-color .15s,background .15s;min-width:0}
+.q-opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.q-opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.q-opt:disabled{cursor:default}
+.q-opt .k{width:24px;height:24px;border-radius:5px;display:grid;place-items:center;font-size:12px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);flex-shrink:0}
+.q-opt .v{font-family:var(--mono);font-size:13.5px;font-weight:500;min-width:0}
+.q-opt .v.txt{font-family:var(--sans);font-size:13px;line-height:1.45}
+.q-opt svg{width:18px;height:18px;margin-left:auto;flex-shrink:0}
+.q-opt.ok{border-color:var(--good-line);background:var(--good-soft);color:var(--good)}
+.q-opt.ok .k{background:var(--good);border-color:var(--good);color:#fff}
+.q-opt.no{border-color:var(--bad-line);background:var(--bad-soft);color:var(--bad)}
+.q-opt.no .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.q-opt.dim{opacity:.55}
+.q-fb{margin-top:14px}
+.q-fb .verdict{margin-bottom:10px}
+.q-fb .verdict strong{font-size:14.5px}
+.q-tex{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 14px}
+.q-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.q-pts{font-family:var(--mono);font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.q-pts.ok{color:var(--good);border-color:var(--good-line);background:var(--good-soft)}
+.q-pts.no{color:var(--bad);border-color:var(--bad-line);background:var(--bad-soft)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.q-banner{display:flex;align-items:center;gap:16px;margin-bottom:32px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.q-banner:hover{border-color:var(--accent-line);box-shadow:0 4px 14px -6px rgba(15,23,42,.15)}
+.q-banner:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.q-banner b{display:block;font-size:15px;font-weight:600}
+.q-banner p{font-size:12.5px;color:var(--muted)}
+.q-banner .q-pts{margin-left:auto}
+.q-banner .go{display:flex;align-items:center;gap:5px;color:var(--accent-text);font-weight:500;font-size:12.5px;white-space:nowrap}
+.q-banner .go svg{width:14px;height:14px}
+
 .scrim{display:none}
 
 /* ---------- Responsive ---------- */
@@ -371,6 +429,12 @@ footer{text-align:center;color:var(--dim);font-size:12px;padding:26px 0 0}
   thead th,tbody td,tfoot td{padding:8px 10px}
   .table-wrap{max-height:380px}
   .ov-grid{gap:12px;margin-bottom:24px}
+  .q-opts{grid-template-columns:minmax(0,1fr)}
+  .q-tabs{flex-wrap:nowrap}
+  .q-banner{flex-wrap:wrap;gap:12px}
+  .q-banner>div{flex:1 1 200px}
+  .q-banner .q-pts{margin-left:0}
+  .q-nav .btn{flex:1 1 auto}
   .sec-title{font-size:11px}
   .howto{gap:12px}
 }
@@ -471,7 +535,10 @@ const I = {
   info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
   logo: svg('<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>'),
   sun: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'),
-  moon: svg('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>')
+  moon: svg('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
+  quiz: svg('<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>'),
+  check: svg('<path d="M20 6 9 17l-5-5"/>'),
+  left: svg('<path d="M19 12H5M12 19l-7-7 7-7"/>')
 };
 
 /* ---------- Opciones comunes de gráficos ---------- */
@@ -1076,6 +1143,311 @@ MODS.vpn = {
 const ORDER = ['compuesto', 'conversion', 'anualidad', 'garit', 'ggeo', 'vpn'];
 
 /* =========================================================
+   CASOS REALES (QUIZ)
+   ========================================================= */
+function seeded(str) {
+  let h = 2166136261;
+  for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
+  return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return (h >>> 0) / 4294967296; };
+}
+function buildCases() {
+  const m = money, p = (v, d = 2) => pct(v, d), mill = v => nf(v / 1e6) + ' millones';
+  const cases = {
+    compuesto: (() => {
+      const P1 = 5e6, i1 = 0.009, n1 = 12, F1 = P1 * Math.pow(1 + i1, n1), S1 = P1 * (1 + i1 * n1);
+      const F2 = 18e6, i2 = 0.011, n2 = 36, P2 = F2 / Math.pow(1 + i2, n2);
+      const i3 = 0.015, n3 = Math.log(2) / Math.log(1 + i3);
+      return [
+        { tag: 'CDT a 12 meses', f: 'money',
+          ctx: `Laura recibió una prima y quiere invertir ${m(P1)} en un CDT a 12 meses. El banco le reconoce una tasa de 0,9% efectivo mensual y los intereses se capitalizan cada mes.`,
+          data: [['Capital', m(P1)], ['Tasa', '0,9% mensual'], ['Plazo', '12 meses']],
+          q: '¿Cuánto dinero recibirá Laura al vencimiento del CDT?',
+          ans: F1, alt: [S1, P1 * (1 + i1), F1 - P1],
+          exp: `Como los intereses se capitalizan, se usa F = P(1+i)<sup>n</sup>: ${hl(m(P1))} × (1,009)<sup>12</sup> = ${hl(m(F1), 'g')}. Con interés simple solo obtendría ${m(S1)}; la diferencia de ${m(F1 - S1)} es el interés sobre interés.`,
+          tex: T`F = ${tm(P1)}\,(1+${tn(i1, 3)})^{${n1}} = ${tm(F1)}`,
+          sim: { modo: 'VF', P: P1, i: 0.9, n: n1, per: 'mensual' } },
+        { tag: 'Cuota inicial de un carro', f: 'money',
+          ctx: `Andrés quiere reunir ${m(F2)} dentro de 3 años para la cuota inicial de un carro. Un fondo de inversión colectiva le ofrece una rentabilidad de 1,1% efectivo mensual.`,
+          data: [['Meta', m(F2)], ['Tasa', '1,1% mensual'], ['Plazo', '36 meses']],
+          q: '¿Cuánto debe depositar hoy, en un solo pago, para alcanzar su meta?',
+          ans: P2, alt: [F2 / (1 + i2 * n2), F2 / Math.pow(1 + i2, 3), F2 * (1 - i2 * n2)],
+          exp: `Se trae la meta a valor presente con P = F / (1+i)<sup>n</sup>, usando n = 36 meses porque la tasa es mensual: ${hl(m(F2))} / (1,011)<sup>36</sup> = ${hl(m(P2), 'g')}. Un error frecuente es usar n = 3 (años) con una tasa mensual.`,
+          tex: T`P = \frac{${tm(F2)}}{(1+${tn(i2, 3)})^{${n2}}} = ${tm(P2)}`,
+          sim: { modo: 'VP', F: F2, i: 1.1, n: n2, per: 'mensual' } },
+        { tag: '¿Se duplica en menos de 4 años?', f: 'num', d: 1, u: ' meses',
+          ctx: 'Una cooperativa promociona una cuenta de ahorro que paga 1,5% efectivo mensual y asegura que "su dinero se duplica en menos de 4 años".',
+          data: [['Tasa', '1,5% mensual'], ['Meta', 'Duplicar el capital']],
+          q: '¿Exactamente cuántos meses tarda en duplicarse un capital a esa tasa?',
+          ans: n3, alt: [72 / 1.5, 1 / i3, 2 / i3],
+          exp: `Se busca n tal que (1+i)<sup>n</sup> = 2, entonces n = ln 2 / ln(1,015) = ${hl(nf(n3, 1) + ' meses', 'g')} (≈ ${nf(n3 / 12, 1)} años): la promesa es cierta. La regla del 72 da una aproximación (48 meses), y ${nf(1 / i3, 1)} meses sería el resultado con interés simple.`,
+          tex: T`n = \frac{\ln 2}{\ln(1+${tn(i3, 3)})} = ${tn(n3, 2)}\ \text{meses}`,
+          sim: { modo: 'n', P: 10e6, F: 20e6, i: 1.5, per: 'mensual' } }
+      ];
+    })(),
+    conversion: (() => {
+      const i1 = 0.021, EA1 = Math.pow(1 + i1, 12) - 1;
+      const EA2 = 0.105, im2 = Math.pow(1 + EA2, 1 / 12) - 1;
+      const EA3 = 0.11, inf3 = 0.052, r3 = (1 + EA3) / (1 + inf3) - 1;
+      return [
+        { tag: 'Tarjeta de crédito', f: 'pct', d: 2,
+          ctx: 'Camila revisa el extracto de su tarjeta de crédito: el banco le cobra 2,1% efectivo mensual vencido por las compras diferidas a cuotas.',
+          data: [['Tasa', '2,1% efectiva mensual'], ['Liquidación', 'Vencida']],
+          q: '¿Cuál es la tasa efectiva anual (EA) que realmente paga?',
+          ans: EA1, alt: [i1 * 12, Math.pow(1 + i1 * 3, 4) - 1, i1],
+          exp: `Una tasa efectiva periódica se lleva a EA con EA = (1+i)<sup>m</sup> − 1 = (1,021)<sup>12</sup> − 1 = ${hl(p(EA1), 'g')}. Multiplicar por 12 (${p(i1 * 12)}) subestima el costo porque ignora la capitalización mensual.`,
+          tex: T`EA = (1+${tn(i1, 3)})^{12}-1 = ${pT(EA1, 2)}`,
+          sim: { tipo: 'efectiva', valor: 2.1, m: 12, mod: 'vencida' } },
+        { tag: 'Comparar un CDT con una cuenta mensual', f: 'pct', d: 3,
+          ctx: 'Un CDT ofrece 10,5% efectivo anual. Juan quiere compararlo con una cuenta de ahorros que liquida intereses cada mes.',
+          data: [['Tasa del CDT', '10,5% EA'], ['Periodo buscado', 'Mensual']],
+          q: '¿Qué tasa efectiva mensual es equivalente a 10,5% EA?',
+          ans: im2, alt: [EA2 / 12, Math.pow(1 + EA2, 1 / 4) - 1, EA2 / 365 * 30],
+          exp: `Para pasar de una tasa mayor a una menor se usa la raíz: i = (1+EA)<sup>1/12</sup> − 1 = (1,105)<sup>1/12</sup> − 1 = ${hl(p(im2, 3), 'g')}. Dividir entre 12 (${p(EA2 / 12, 3)}) da una tasa mayor a la equivalente.`,
+          tex: T`i_{mes} = (1+${tn(EA2, 3)})^{1/12}-1 = ${pT(im2, 3)}`,
+          sim: { tipo: 'ea', valor: 10.5 } },
+        { tag: 'Rentabilidad real frente a la inflación', f: 'pct', d: 2,
+          ctx: 'Sofía tiene sus ahorros en un CDT que rinde 11% EA. Durante ese año la inflación en Colombia fue de 5,2%.',
+          data: [['Rentabilidad', '11% EA'], ['Inflación', '5,2% anual']],
+          q: '¿Cuál fue su rentabilidad real, es decir, cuánto ganó en poder adquisitivo?',
+          ans: r3, alt: [EA3 - inf3, (1 + EA3) * (1 + inf3) - 1, EA3 / (1 + inf3)],
+          exp: `Con la ecuación de Fisher: i<sub>r</sub> = (1+i)/(1+π) − 1 = 1,11 / 1,052 − 1 = ${hl(p(r3), 'g')}. Restar las tasas (${p(EA3 - inf3)}) es solo una aproximación que sobrestima la ganancia real.`,
+          tex: T`i_r = \frac{1+${tn(EA3, 2)}}{1+${tn(inf3, 3)}}-1 = ${pT(r3, 2)}`,
+          sim: { tipo: 'ea', valor: 11, inf: 5.2 } }
+      ];
+    })(),
+    anualidad: (() => {
+      const VP1 = 45e6, i1 = 0.014, n1 = 48, R1 = VP1 / annuityPV(n1, i1);
+      const R2 = 300000, i2 = 0.008, n2 = 60, VF2 = R2 * annuityFV(n2, i2);
+      const R3 = 2.5e6, i3 = 0.012, n3 = 12, VP3 = R3 * annuityPV(n3, i3) * (1 + i3);
+      return [
+        { tag: 'Crédito de vehículo', f: 'money',
+          ctx: `Carlos compra un carro y financia ${m(VP1)} con un banco a 48 meses. La tasa del crédito es 1,4% efectivo mensual y las cuotas son fijas, pagadas al final de cada mes.`,
+          data: [['Monto', m(VP1)], ['Tasa', '1,4% mensual'], ['Plazo', '48 cuotas vencidas']],
+          q: '¿De cuánto es la cuota mensual?',
+          ans: R1, alt: [VP1 / n1, VP1 * (1 + i1 * n1) / n1, R1 / (1 + i1)],
+          exp: `Se despeja la cuota de una anualidad vencida: R = VP · i / (1 − (1+i)<sup>−n</sup>) = ${hl(m(R1), 'g')}. En total Carlos pagará ${m(R1 * n1)}, de los cuales ${hl(m(R1 * n1 - VP1), 'r')} son intereses.`,
+          tex: T`R = \frac{${tm(VP1)}\times ${tn(i1, 3)}}{1-(1+${tn(i1, 3)})^{-${n1}}} = ${tm(R1)}`,
+          sim: { modo: 'cuota', VP: VP1, i: 1.4, n: n1, tipo: 'vencida', k: 0, per: 'mensual' } },
+        { tag: 'Ahorro programado', f: 'money',
+          ctx: `María abre un ahorro programado: deposita ${m(R2)} al final de cada mes durante 5 años en un fondo que paga 0,8% efectivo mensual.`,
+          data: [['Depósito', m(R2) + ' mensual'], ['Tasa', '0,8% mensual'], ['Plazo', '60 meses']],
+          q: '¿Cuánto tendrá acumulado al final de los 5 años?',
+          ans: VF2, alt: [R2 * n2, VF2 * (1 + i2), R2 * annuityPV(n2, i2)],
+          exp: `Es el valor futuro de una anualidad vencida: VF = R · ((1+i)<sup>n</sup> − 1) / i = ${hl(m(VF2), 'g')}. De ese total, ${m(R2 * n2)} son sus aportes y ${hl(m(VF2 - R2 * n2), 'g')} son rendimientos.`,
+          tex: T`VF = ${tm(R2)}\left[\frac{(1+${tn(i2, 3)})^{${n2}}-1}{${tn(i2, 3)}}\right] = ${tm(VF2)}`,
+          sim: { modo: 'valores', R: R2, i: 0.8, n: n2, tipo: 'vencida', k: 0, per: 'mensual' } },
+        { tag: 'Arriendo pagado por anticipado', f: 'money',
+          ctx: `El dueño de un local comercial lo arrienda por un año con cánones de ${m(R3)} que se pagan al inicio de cada mes. El arrendatario propone pagar todo el contrato hoy, y ambos acuerdan descontar los pagos al 1,2% mensual.`,
+          data: [['Canon', m(R3)], ['Pagos', '12 anticipados'], ['Tasa', '1,2% mensual']],
+          q: '¿Cuánto debe pagar hoy el arrendatario?',
+          ans: VP3, alt: [R3 * annuityPV(n3, i3), R3 * n3, R3 * annuityPV(n3, i3) / (1 + i3)],
+          exp: `Los pagos al inicio de cada mes forman una anualidad anticipada: VP = R · a<sub>n|i</sub> · (1+i) = ${hl(m(VP3), 'g')}. Si se tratara como vencida daría ${m(R3 * annuityPV(n3, i3))}, porque se descontaría cada pago un mes de más.`,
+          tex: T`VP = ${tm(R3)}\left[\frac{1-(1+${tn(i3, 3)})^{-${n3}}}{${tn(i3, 3)}}\right](1+${tn(i3, 3)}) = ${tm(VP3)}`,
+          sim: { modo: 'valores', R: R3, i: 1.2, n: n3, tipo: 'anticipada', k: 0, per: 'mensual' } }
+      ];
+    })(),
+    garit: (() => {
+      const A1 = 1.2e6, G1 = 150000, i1 = 0.10, n1 = 8, a1 = annuityPV(n1, i1);
+      const VPA1 = A1 * a1, VPG1 = G1 / i1 * (a1 - n1 * Math.pow(1 + i1, -n1)), VP1 = VPA1 + VPG1;
+      const A2 = 800000, G2 = 40000, n2 = 18, L2 = A2 + (n2 - 1) * G2;
+      const A3 = 200000, G3 = 20000, i3 = 0.01, n3 = 24, Aeq3 = A3 + G3 * (1 / i3 - n3 / (Math.pow(1 + i3, n3) - 1));
+      const VP3 = Aeq3 * annuityPV(n3, i3);
+      return [
+        { tag: 'Mantenimiento de una máquina', f: 'money',
+          ctx: `Una empresa de confecciones estima que el mantenimiento de una máquina cuesta ${m(A1)} el primer año y aumentará ${m(G1)} cada año durante sus 8 años de vida útil. La tasa de oportunidad es 10% EA.`,
+          data: [['Primer costo', m(A1)], ['Aumento anual', m(G1)], ['Tasa', '10% EA'], ['Plazo', '8 años']],
+          q: '¿Cuál es el valor presente de todos los costos de mantenimiento?',
+          ans: VP1, alt: [n1 * A1 + G1 * n1 * (n1 - 1) / 2, VPA1, VPA1 - VPG1],
+          exp: `El VP se divide en dos partes: la serie uniforme de ${m(A1)} vale ${hl(m(VPA1))} y el gradiente de ${m(G1)} aporta ${hl(m(VPG1))}. En total: ${hl(m(VP1), 'g')}. Sumar los costos sin descontar (${m(n1 * A1 + G1 * n1 * (n1 - 1) / 2)}) ignora el valor del dinero en el tiempo.`,
+          tex: T`VP = ${tm(A1)}\,a_{8|10\%} + \frac{${tm(G1)}}{0{,}10}\left[a_{8|10\%} - \frac{8}{1{,}1^{8}}\right] = ${tm(VP1)}`,
+          sim: { A: A1, G: G1, dir: 'creciente', i: 10, n: n1, per: 'anual' } },
+        { tag: 'Plan de pagos de un almacén', f: 'money',
+          ctx: `Un almacén de electrodomésticos ofrece un plan de pagos que inicia en ${m(A2)} y aumenta ${m(G2)} cada mes, durante 18 meses.`,
+          data: [['Primera cuota', m(A2)], ['Aumento mensual', m(G2)], ['Cuotas', '18']],
+          q: '¿Cuál es el valor de la última cuota?',
+          ans: L2, alt: [A2 + n2 * G2, A2 + (n2 - 2) * G2, (n2 - 1) * G2],
+          exp: `La cuota t es A + (t − 1)G, porque el primer pago no tiene aumento. La cuota 18 es ${m(A2)} + 17 × ${m(G2)} = ${hl(m(L2), 'g')}. Usar 18 aumentos (${m(A2 + n2 * G2)}) es el error más común.`,
+          tex: T`A_{18} = ${tm(A2)} + 17\times ${tm(G2)} = ${tm(L2)}`,
+          sim: { A: A2, G: G2, dir: 'creciente', i: 1.5, n: n2, per: 'mensual' } },
+        { tag: 'Ahorro creciente de una estudiante', f: 'money',
+          ctx: `Valentina empieza a ahorrar ${m(A3)} el primer mes y cada mes aumenta su ahorro en ${m(G3)}, durante 24 meses. Su cuenta paga 1% efectivo mensual.`,
+          data: [['Primer depósito', m(A3)], ['Aumento mensual', m(G3)], ['Tasa', '1% mensual'], ['Plazo', '24 meses']],
+          q: '¿Qué depósito mensual fijo sería financieramente equivalente a su plan?',
+          ans: Aeq3, alt: [A3 + G3 * (n3 - 1) / 2, A3 + G3 * n3 / 2, VP3 / n3],
+          exp: `La cuota uniforme equivalente es A<sub>eq</sub> = A + G[1/i − n/((1+i)<sup>n</sup> − 1)] = ${hl(m(Aeq3), 'g')}. Es menor que el promedio simple de las cuotas (${m(A3 + G3 * (n3 - 1) / 2)}) porque los depósitos grandes llegan al final y valen menos hoy.`,
+          tex: T`A_{eq} = ${tm(A3)} + ${tm(G3)}\left[\frac{1}{0{,}01}-\frac{24}{1{,}01^{24}-1}\right] = ${tm(Aeq3)}`,
+          sim: { A: A3, G: G3, dir: 'creciente', i: 1, n: n3, per: 'mensual' } }
+      ];
+    })(),
+    ggeo: (() => {
+      const A1 = 36e6, g1 = 0.06, i1 = 0.12, n1 = 5, VP1 = A1 * (1 - Math.pow((1 + g1) / (1 + i1), n1)) / (i1 - g1);
+      const A2 = 1.5e6, g2 = 0.05, L2 = A2 * Math.pow(1 + g2, 5);
+      const A3 = 10e6, i3 = 0.08, n3 = 10, VP3 = n3 * A3 / (1 + i3);
+      return [
+        { tag: 'Contrato laboral con reajuste', f: 'money',
+          ctx: `Un ingeniero firma un contrato por 5 años con un salario de ${m(A1)} el primer año, que se reajusta 6% cada año. Quiere saber cuánto vale hoy ese contrato, con una tasa de descuento de 12% EA.`,
+          data: [['Primer salario', m(A1)], ['Reajuste', '6% anual'], ['Tasa', '12% EA'], ['Plazo', '5 años']],
+          q: '¿Cuál es el valor presente de los salarios del contrato?',
+          ans: VP1, alt: [A1 * annuityPV(n1, i1), A1 * (Math.pow(1 + g1, n1) - 1) / g1, A1 * (1 - Math.pow((1 + g1) / (1 + i1), n1)) / (i1 + g1)],
+          exp: `Con gradiente geométrico (i ≠ g): VP = A[1 − ((1+g)/(1+i))<sup>n</sup>] / (i − g) = ${hl(m(VP1), 'g')}. Sin el reajuste, el contrato valdría solo ${m(A1 * annuityPV(n1, i1))}.`,
+          tex: T`VP = ${tm(A1)}\cdot\frac{1-\left(\frac{1{,}06}{1{,}12}\right)^{5}}{0{,}12-0{,}06} = ${tm(VP1)}`,
+          sim: { A: A1, g: 6, dir: 'creciente', i: 12, n: n1, per: 'anual' } },
+        { tag: 'Incremento del canon de arriendo', f: 'money',
+          ctx: `Un apartamento se arrienda por ${m(A2)} mensuales el primer año. El contrato establece un incremento de 5% anual sobre el canon.`,
+          data: [['Canon inicial', m(A2)], ['Incremento', '5% anual']],
+          q: '¿Cuál será el canon mensual en el sexto año?',
+          ans: L2, alt: [A2 * Math.pow(1 + g2, 6), A2 * (1 + g2 * 5), A2 * (1 + g2 * 6)],
+          exp: `Cada año el canon se multiplica por 1,05, y del año 1 al 6 hay 5 incrementos: ${m(A2)} × 1,05<sup>5</sup> = ${hl(m(L2), 'g')}. Sumar 5% fijo cada año (${m(A2 * (1 + g2 * 5))}) sería un gradiente aritmético, no geométrico.`,
+          tex: T`A_6 = ${tm(A2)}\times(1{,}05)^{5} = ${tm(L2)}`,
+          sim: { A: A2, g: 5, dir: 'creciente', i: 10, n: 6, per: 'anual' } },
+        { tag: 'Donación que crece igual que la tasa', f: 'money',
+          ctx: `Una fundación recibirá una donación anual de ${m(A3)} durante 10 años, que crecerá 8% cada año. La fundación descuenta sus flujos al 8% EA.`,
+          data: [['Primera donación', m(A3)], ['Crecimiento', '8% anual'], ['Tasa', '8% EA'], ['Plazo', '10 años']],
+          q: '¿Cuál es el valor presente de la donación?',
+          ans: VP3, alt: [n3 * A3, A3 * annuityPV(n3, i3), n3 * A3 * (1 + i3)],
+          exp: `Como g = i, la fórmula general se indetermina y se usa el caso especial VP = nA / (1+i) = 10 × ${m(A3)} / 1,08 = ${hl(m(VP3), 'g')}. Cada donación vale hoy lo mismo: ${m(A3 / (1 + i3))}.`,
+          tex: T`VP = \frac{10\times ${tm(A3)}}{1{,}08} = ${tm(VP3)}`,
+          sim: { A: A3, g: 8, dir: 'creciente', i: 8, n: n3, per: 'anual' } }
+      ];
+    })(),
+    vpn: (() => {
+      const Io1 = 40e6, r1 = 0.15, F1 = [12e6, 14e6, 16e6, 18e6], V1 = npv(r1, Io1, F1), sum1 = F1.reduce((x, y) => x + y, 0);
+      const Io2 = 10e6, F2 = Array(5).fill(3e6), tir2 = irr(Io2, F2);
+      return [
+        { tag: 'Montar una panadería', f: 'money',
+          ctx: `Ana quiere abrir una panadería con una inversión inicial de ${m(Io1)}. Proyecta flujos netos de ${F1.map(f => nf(f / 1e6)).join(', ').replace(/, (\d+)$/, ' y $1')} millones en los años 1 a 4. Su tasa de oportunidad (TIO) es 15% EA.`,
+          data: [['Inversión', m(Io1)], ['Flujos', F1.map(f => nf(f / 1e6) + ' M').join(' · ')], ['TIO', '15% EA']],
+          q: '¿Cuál es el valor presente neto (VPN) del proyecto?',
+          ans: V1, alt: [sum1 - Io1, npv(0.10, Io1, F1), V1 + Io1],
+          exp: `Cada flujo se descuenta a la TIO y se resta la inversión: VPN = −${m(Io1)} + Σ F<sub>t</sub>/(1,15)<sup>t</sup> = ${hl(m(V1), 'g')}. Es positivo: el proyecto rinde más que el 15% exigido. Sin descontar, la ganancia aparente sería ${mill(sum1 - Io1)}.`,
+          tex: T`VPN = -${tm(Io1)} + \frac{${tm(F1[0])}}{1{,}15} + \frac{${tm(F1[1])}}{1{,}15^{2}} + \frac{${tm(F1[2])}}{1{,}15^{3}} + \frac{${tm(F1[3])}}{1{,}15^{4}} = ${tm(V1)}`,
+          sim: { Io: Io1, tio: 15, flujos: F1 } },
+        { tag: 'Comprar un horno industrial', f: 'pct', d: 2,
+          ctx: `Una tienda evalúa comprar un horno industrial de ${m(Io2)} que le ahorrará ${m(F2[0])} al año en costos durante 5 años.`,
+          data: [['Inversión', m(Io2)], ['Ahorro anual', m(F2[0])], ['Vida útil', '5 años']],
+          q: '¿Cuál es la tasa interna de retorno (TIR) de la inversión?',
+          ans: tir2, alt: [F2[0] / Io2, (F2[0] * 5 - Io2) / Io2 / 5, (F2[0] * 5 - Io2) / Io2],
+          exp: `La TIR es la tasa que hace VPN = 0: ${m(Io2)} = ${m(F2[0])} · a<sub>5|TIR</sub>. Resolviendo numéricamente, TIR = ${hl(p(tir2), 'g')}. Dividir el ahorro entre la inversión (30%) ignora que el horno se desgasta y no se recupera al final.`,
+          tex: T`0 = -${tm(Io2)} + ${tm(F2[0])}\left[\frac{1-(1+TIR)^{-5}}{TIR}\right] \Rightarrow TIR = ${pT(tir2, 2)}`,
+          sim: { Io: Io2, tio: 12, flujos: F2 } },
+        { tag: 'Decidir con TIR y TIO',
+          ctx: 'Un inversionista exige una rentabilidad mínima (TIO) de 22% EA. Le proponen un proyecto de transporte cuya TIR es 18% EA.',
+          data: [['TIO', '22% EA'], ['TIR del proyecto', '18% EA']],
+          q: '¿Qué debe hacer el inversionista?',
+          opts: ['Rechazarlo: con una TIR menor que la TIO, el VPN a la TIO es negativo.', 'Aceptarlo: la TIR es positiva, así que el proyecto gana dinero.', 'Aceptarlo: una TIR de 18% es alta para el mercado colombiano.', 'Es indiferente: la TIR y la TIO no se pueden comparar.'],
+          exp: 'La TIR es la tasa a la que el VPN es cero, y el VPN baja a medida que sube la tasa. Con una TIO de 22% (mayor que la TIR), el VPN es negativo: el proyecto no alcanza a pagar la rentabilidad que el inversionista exige. Que la TIR sea positiva no basta.' }
+      ];
+    })()
+  };
+  Object.entries(cases).forEach(([mod, list]) => list.forEach((c, j) => {
+    c.mod = mod; c.id = `${mod}-${j + 1}`;
+    const fmt = v => c.f === 'money' ? money(v) : c.f === 'pct' ? pct(v, c.d ?? 2) : nf(v, c.d ?? 0) + (c.u || '');
+    const opts = c.opts ? c.opts.map((t, k) => ({ t, ok: k === 0, txt: true })) : [c.ans, ...c.alt].map((v, k) => ({ t: fmt(v), ok: k === 0 }));
+    const rnd = seeded(c.id);
+    for (let k = opts.length - 1; k > 0; k--) { const r = Math.floor(rnd() * (k + 1)); [opts[k], opts[r]] = [opts[r], opts[k]]; }
+    c.options = opts; c.correct = opts.findIndex(o => o.ok); c.ansText = opts[c.correct].t;
+  }));
+  return cases;
+}
+const QZ = buildCases();
+const QZ_KEY = 'quiz-casos-v1';
+const QZ_TOTAL = ORDER.reduce((s, id) => s + QZ[id].length, 0);
+let qAns = {}, qTopic = 'compuesto';
+try { qAns = JSON.parse(localStorage.getItem(QZ_KEY)) || {}; } catch (e) { qAns = {}; }
+const qSave = () => { try { localStorage.setItem(QZ_KEY, JSON.stringify(qAns)); } catch (e) { /* sin almacenamiento */ } };
+const qScore = list => list.reduce((s, c) => s + (qAns[c.id] === c.correct ? 1 : 0), 0);
+const qDone = list => list.filter(c => qAns[c.id] !== undefined).length;
+const navTitle = id => MODS[id].title.replace(' de interés', '').replace('Valor presente neto (VPN)', 'VPN y TIR');
+
+function buildQuiz() {
+  return `<section class="module" id="m-quiz" hidden>
+    <div class="mod-hero card">
+      <div>
+        <span class="eyebrow">Práctica · Casos reales</span>
+        <h1>Casos reales</h1>
+        <p>Situaciones financieras de la vida cotidiana en Colombia (CDT, créditos, tarjetas, arriendos, salarios y proyectos de emprendimiento) para poner a prueba cada tema. Cada respuesta correcta suma 1 punto; después de responder verás la solución y podrás abrir el caso en el simulador.</p>
+        <div class="chips">${ORDER.map(id => `<span class="chip">${navTitle(id)}</span>`).join('')}</div>
+      </div>
+      <div class="q-score">
+        <span class="fb-label">Tu puntaje</span>
+        <div class="big" id="qBig"></div>
+        <div class="q-bar"><i id="qBar"></i></div>
+        <div class="q-meta"><span id="qDoneTxt"></span><span id="qNota"></span></div>
+        <button type="button" class="btn sm" data-qreset>${I.reset} Reiniciar quiz</button>
+      </div>
+    </div>
+    <div class="q-tabs" id="qTabs" role="tablist"></div>
+    <div id="qFinal"></div>
+    <div class="q-list" id="qList"></div>
+    <div class="q-nav" id="qNav"></div>
+  </section>`;
+}
+function caseHTML(c, n, total) {
+  const a = qAns[c.id], done = a !== undefined, right = done && a === c.correct;
+  const opts = c.options.map((o, k) => {
+    const cls = !done ? '' : k === c.correct ? 'ok' : k === a ? 'no' : 'dim';
+    const ic = done && k === c.correct ? I.check : done && k === a ? I.x : '';
+    return `<button type="button" class="q-opt ${cls}" data-qopt="${c.id}" data-qk="${k}" ${done ? 'disabled' : ''}><span class="k">${'ABCD'[k]}</span><span class="v${o.txt ? ' txt' : ''}">${o.t}</span>${ic}</button>`;
+  }).join('');
+  const fb = !done ? '' : `<div class="q-fb">
+      <div class="verdict v-${right ? 'good' : 'bad'}"><div class="v-ic">${right ? I.good : I.bad}</div><div><small>${right ? 'Correcto · +1 punto' : 'Incorrecto · 0 puntos'}</small><strong>${right ? 'Respuesta' : 'La respuesta correcta es'}: ${c.ansText}</strong><p>${c.exp}</p></div></div>
+      ${c.tex ? `<div class="q-tex st-tex" data-qtex="${c.id}"></div>` : ''}
+      ${c.sim ? `<div class="q-actions"><button type="button" class="btn sm" data-qsim="${c.id}">${I.sliders} Abrir este caso en el simulador</button></div>` : ''}
+    </div>`;
+  return `<article class="card q-case" id="q-${c.id}">
+    <div class="q-head"><span class="q-tag">Caso ${n} de ${total}</span><span class="q-pts${done ? (right ? ' ok' : ' no') : ''}">${done ? (right ? '+1 punto' : '0 puntos') : '1 punto'}</span></div>
+    <h3>${c.tag}</h3>
+    <p class="q-ctx">${c.ctx}</p>
+    ${c.data ? `<div class="q-data">${c.data.map(([l, v]) => `<span>${l}<b>${v}</b></span>`).join('')}</div>` : ''}
+    <p class="q-q">${c.q}</p>
+    <div class="q-opts">${opts}</div>
+    ${fb}
+  </article>`;
+}
+function updateQuizBadges() {
+  const all = ORDER.flatMap(id => QZ[id]), pts = qScore(all);
+  const nn = document.querySelector('#nav [data-go="quiz"] .nn'); if (nn) nn.textContent = `${pts}/${QZ_TOTAL}`;
+  const ov = document.getElementById('ovQ'); if (ov) ov.textContent = `${pts} / ${QZ_TOTAL} puntos`;
+}
+function renderQuiz() {
+  const all = ORDER.flatMap(id => QZ[id]), pts = qScore(all), done = qDone(all);
+  document.getElementById('qBig').innerHTML = `${pts}<small> / ${QZ_TOTAL} puntos</small>`;
+  document.getElementById('qBar').style.width = (pts / QZ_TOTAL * 100) + '%';
+  document.getElementById('qDoneTxt').textContent = `Respondidas: ${done} de ${QZ_TOTAL}`;
+  document.getElementById('qNota').textContent = `Nota: ${nf(pts / QZ_TOTAL * 5, 1)} / 5,0`;
+  document.getElementById('qTabs').innerHTML = ORDER.map((id, j) => {
+    const list = QZ[id], s = qScore(list), d = qDone(list);
+    return `<button type="button" role="tab" aria-selected="${id === qTopic}" class="${id === qTopic ? 'on' : ''}" data-qtopic="${id}">${I[MODS[id].icon]}<span>${navTitle(id)}</span><span class="q-cnt${d === list.length ? ' full' : ''}">${s}/${list.length}</span></button>`;
+  }).join('');
+  const nota = pts / QZ_TOTAL * 5, tone = nota >= 4 ? 'good' : nota >= 3 ? 'warn' : 'bad';
+  document.getElementById('qFinal').innerHTML = done < QZ_TOTAL ? '' : `<div class="verdict v-${tone}"><div class="v-ic">${tone === 'good' ? I.good : tone === 'warn' ? I.warn : I.bad}</div><div><small>Quiz completado</small><strong>Obtuviste ${pts} de ${QZ_TOTAL} puntos · Nota ${nf(nota, 1)} / 5,0</strong><p>${tone === 'good' ? 'Excelente dominio de los temas del curso.' : tone === 'warn' ? 'Aprobado. Repasa los casos que fallaste abriéndolos en el simulador.' : 'Repasa los módulos y vuelve a intentarlo con "Reiniciar quiz".'}</p></div></div>`;
+  const list = QZ[qTopic];
+  document.getElementById('qList').innerHTML = list.map((c, j) => caseHTML(c, j + 1, list.length)).join('');
+  document.querySelectorAll('#qList [data-qtex]').forEach(el => tex(el, all.find(c => c.id === el.dataset.qtex).tex));
+  const ix = ORDER.indexOf(qTopic), prev = ORDER[ix - 1], next = ORDER[ix + 1];
+  document.getElementById('qNav').innerHTML = `${prev ? `<button type="button" class="btn" data-qtopic="${prev}" data-qscroll>${I.left} ${navTitle(prev)}</button>` : '<span></span>'}<button type="button" class="btn" data-go="${qTopic}">Repasar el módulo</button>${next ? `<button type="button" class="btn primary" data-qtopic="${next}" data-qscroll>${navTitle(next)} ${I.arrow}</button>` : '<span></span>'}`;
+  updateQuizBadges();
+}
+function bindQuiz() {
+  document.getElementById('m-quiz').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.qtopic) {
+      qTopic = b.dataset.qtopic; renderQuiz();
+      if (b.hasAttribute('data-qscroll')) document.getElementById('qTabs').scrollIntoView({ block: 'start' });
+    } else if (b.dataset.qopt) {
+      qAns[b.dataset.qopt] = +b.dataset.qk; qSave(); renderQuiz();
+      const fb = document.querySelector(`#q-${b.dataset.qopt} .q-fb`); if (fb) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    } else if (b.dataset.qsim) {
+      const c = ORDER.flatMap(id => QZ[id]).find(x => x.id === b.dataset.qsim);
+      S[c.mod] = Object.assign(clone(DEF[c.mod]), clone(c.sim)); buildFields(c.mod); go(c.mod);
+    } else if (b.hasAttribute('data-qreset')) {
+      if (qDone(ORDER.flatMap(id => QZ[id])) && !confirm('¿Borrar todas tus respuestas y reiniciar el quiz?')) return;
+      qAns = {}; qSave(); qTopic = 'compuesto'; renderQuiz();
+    }
+  });
+}
+
+/* =========================================================
    INTERFAZ
    ========================================================= */
 const charts = {};
@@ -1129,7 +1501,8 @@ function buildNav() {
   const item = (id, icon, title, sub, num) => `<button data-go="${id}"><span class="ni">${I[icon]}</span><span class="nt"><b>${title}</b><small>${sub}</small></span>${num ? `<span class="nn">${num}</span>` : ''}</button>`;
   document.getElementById('nav').innerHTML =
     `<div class="nav-label">General</div>` + item('resumen', 'grid', 'Resumen ejecutivo', 'Vista global de módulos') +
-    `<div class="nav-label">Módulos de análisis</div>` + ORDER.map(id => item(id, MODS[id].icon, MODS[id].title.replace(' de interés', '').replace('Valor presente neto (VPN)', 'VPN y TIR'), MODS[id].short, MODS[id].num)).join('');
+    `<div class="nav-label">Módulos de análisis</div>` + ORDER.map(id => item(id, MODS[id].icon, navTitle(id), MODS[id].short, MODS[id].num)).join('') +
+    `<div class="nav-label">Práctica</div>` + item('quiz', 'quiz', 'Casos reales', 'Quiz con puntaje por tema', `0/${QZ_TOTAL}`);
 }
 function buildOverview() {
   return `<section class="module" id="m-resumen">
@@ -1137,11 +1510,11 @@ function buildOverview() {
       <div>
         <span class="eyebrow">Proyecto académico · Matemáticas Financieras</span>
         <h1>Dashboard de Matemáticas Financieras</h1>
-        <p>Seis herramientas de análisis que calculan, grafican e interpretan en tiempo real: interés compuesto, conversión de tasas, anualidades, gradientes aritmético y geométrico, y evaluación de proyectos con VPN y TIR.</p>
+        <p>Seis herramientas de análisis que calculan, grafican e interpretan en tiempo real: interés compuesto, conversión de tasas, anualidades, gradientes aritmético y geométrico, y evaluación de proyectos con VPN y TIR. Incluye un quiz de casos reales para practicar cada tema.</p>
         <div class="meta">
           <div><small>Estudiante</small><b>Diego Alejandro Clavijo Gutiérrez</b></div>
           <div><small>Institución</small><b>Tecnológico de Antioquia I.U.</b></div>
-          <div><small>Módulos</small><b>6 temas</b></div>
+          <div><small>Contenido</small><b>6 temas + quiz</b></div>
           <div><small>Año</small><b>2026</b></div>
         </div>
       </div>
@@ -1149,6 +1522,13 @@ function buildOverview() {
     </div>
     <div class="sec-title">Módulos de análisis</div>
     <div class="ov-grid" id="ovGrid"></div>
+    <div class="sec-title">Práctica</div>
+    <div class="card q-banner" data-go="quiz" tabindex="0" role="button">
+      <span class="ov-ic">${I.quiz}</span>
+      <div><b>Casos reales · Quiz</b><p>${QZ_TOTAL} situaciones de la vida real (CDT, créditos, tarjetas, arriendos y proyectos) para practicar cada tema y sumar puntos.</p></div>
+      <span class="q-pts" id="ovQ">0 / ${QZ_TOTAL} puntos</span>
+      <span class="go">Empezar ${I.arrow}</span>
+    </div>
     <div class="sec-title">Ruta conceptual del curso</div>
     <div class="route">
       <div><span>01</span><b>Interés compuesto</b><p>Base: el dinero cambia de valor en el tiempo.</p></div>
@@ -1162,7 +1542,7 @@ function buildOverview() {
     <div class="howto">
       <div class="card"><span class="n">1</span><div><b>Elige un módulo</b><p>Desde el menú lateral o haciendo clic en cualquier tarjeta del resumen.</p></div></div>
       <div class="card"><span class="n">2</span><div><b>Cambia los datos</b><p>Escribe valores o usa los deslizadores. Todo se recalcula al instante.</p></div></div>
-      <div class="card"><span class="n">3</span><div><b>Lee el análisis</b><p>Revisa el diagnóstico, el desarrollo paso a paso y exporta la tabla a CSV/Excel.</p></div></div>
+      <div class="card"><span class="n">3</span><div><b>Lee y practica</b><p>Revisa el diagnóstico y el paso a paso, exporta la tabla y pon a prueba lo aprendido en Casos reales.</p></div></div>
     </div>
     <footer>Dashboard de Matemáticas Financieras · Diego Alejandro Clavijo Gutiérrez · Tecnológico de Antioquia Institución Universitaria · 2026</footer>
   </section>`;
@@ -1199,17 +1579,38 @@ function buildModule(id) {
 }
 
 /* ---------- Campos ---------- */
+// Los campos muestran los números con formato colombiano: puntos de miles y coma decimal.
+const fmtIn = (t, v) => !Number.isFinite(+v) ? '' : t === 'pct' ? (+v).toLocaleString('es-CO', { maximumFractionDigits: 3 }) : nf(+v);
+function parseIn(t, s) {
+  s = String(s).trim();
+  if (t === 'pct') { if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); return parseFloat(s.replace(/[^\d.-]/g, '')); }
+  const d = s.replace(/\D/g, '');
+  return d ? (/^[-−]/.test(s) ? -1 : 1) * parseInt(d, 10) : NaN;
+}
+function liveGroup(inp) {
+  const s = inp.value, pos = inp.selectionStart ?? s.length, left = s.slice(0, pos).replace(/\D/g, '').length;
+  const v = parseIn('money', s);
+  if (!Number.isFinite(v)) return v;
+  const out = nf(v);
+  if (out !== s) {
+    inp.value = out;
+    let i = 0, seen = 0;
+    while (i < out.length && seen < left) { if (/\d/.test(out[i])) seen++; i++; }
+    try { inp.setSelectionRange(i, i); } catch (e) { /* campo sin selección */ }
+  }
+  return v;
+}
 function rangePct(f, v) { return Math.max(0, Math.min(100, (v - f.min) / (f.max - f.min) * 100)); }
 function fieldHTML(id, f) {
   const v = S[id][f.k];
   if (f.t === 'select') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="select"><select data-k="${f.k}">${f.o.map(([val, lab]) => `<option value="${val}" ${String(v) === String(val) ? 'selected' : ''}>${lab}</option>`).join('')}</select></div></div>`;
   if (f.t === 'seg') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="seg">${f.o.map(([val, lab]) => `<button type="button" data-seg="${f.k}" data-val="${val}" class="${String(v) === String(val) ? 'on' : ''}">${lab}</button>`).join('')}</div></div>`;
-  if (f.t === 'flows') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="flows">${v.map((x, j) => `<div class="flow-row"><span class="yr">Año ${j + 1}</span><div class="num-wrap"><span>$</span><input type="number" inputmode="numeric" data-flow="${j}" value="${x}" step="100000"></div><button type="button" class="icon-btn" data-delflow="${j}" title="Eliminar año">${I.x}</button></div>`).join('')}</div><button type="button" class="btn sm w100 add-flow" data-addflow>${I.plus} Agregar año</button></div>`;
+  if (f.t === 'flows') return `<div class="field" data-f="${f.k}"><label>${f.l}</label><div class="flows">${v.map((x, j) => `<div class="flow-row"><span class="yr">Año ${j + 1}</span><div class="num-wrap"><span>$</span><input type="text" inputmode="numeric" autocomplete="off" data-flow="${j}" value="${fmtIn('money', x)}"></div><button type="button" class="icon-btn" data-delflow="${j}" title="Eliminar año">${I.x}</button></div>`).join('')}</div><button type="button" class="btn sm w100 add-flow" data-addflow>${I.plus} Agregar año</button></div>`;
   const pre = f.t === 'money' ? '$' : '', suf = f.t === 'pct' ? '%' : '';
   return `<div class="field" data-f="${f.k}">
-    <div class="fl-top"><label>${f.l}</label><div class="num-wrap">${pre ? `<span>${pre}</span>` : ''}<input type="number" inputmode="decimal" data-k="${f.k}" value="${v}" step="${f.step}">${suf ? `<span>${suf}</span>` : ''}</div></div>
+    <div class="fl-top"><label>${f.l}</label><div class="num-wrap">${pre ? `<span>${pre}</span>` : ''}<input type="text" inputmode="${f.t === 'pct' ? 'decimal' : 'numeric'}" autocomplete="off" data-k="${f.k}" value="${fmtIn(f.t, v)}">${suf ? `<span>${suf}</span>` : ''}</div></div>
     <input type="range" data-r="${f.k}" min="${f.min}" max="${f.max}" step="${f.step}" value="${v}" style="--p:${rangePct(f, v)}%">
-    <div class="fl-hint"><span>${f.t === 'money' ? compact(f.min) : nf(f.min, f.t === 'pct' ? 1 : 0) + suf}</span><span data-h="${f.k}">${f.t === 'money' ? money(+v) : ''}</span><span>${f.t === 'money' ? compact(f.max) : nf(f.max, f.t === 'pct' ? 1 : 0) + suf}</span></div>
+    <div class="fl-hint"><span>${f.t === 'money' ? compact(f.min) : nf(f.min, f.t === 'pct' ? 1 : 0) + suf}</span><span></span><span>${f.t === 'money' ? compact(f.max) : nf(f.max, f.t === 'pct' ? 1 : 0) + suf}</span></div>
   </div>`;
 }
 function buildFields(id) {
@@ -1225,26 +1626,34 @@ function syncVisibility(id) {
 function bindModule(id) {
   const root = document.getElementById('m-' + id);
   const fieldOf = k => MODS[id].fields.find(f => f.k === k);
-  const setNum = (k, raw, from) => {
-    const f = fieldOf(k); let v = parseFloat(raw);
+  const setNum = (k, v, from) => {
+    const f = fieldOf(k);
     if (!Number.isFinite(v)) return;
     if (f.t === 'int') v = Math.round(v);
     S[id][k] = v;
-    const rg = root.querySelector(`[data-r="${k}"]`), nb = root.querySelector(`[data-k="${k}"]`), h = root.querySelector(`[data-h="${k}"]`);
+    const rg = root.querySelector(`[data-r="${k}"]`), nb = root.querySelector(`input[data-k="${k}"]`);
     if (rg) { if (from !== 'range') rg.value = Math.max(f.min, Math.min(f.max, v)); rg.style.setProperty('--p', rangePct(f, v) + '%'); }
-    if (nb && from !== 'num') nb.value = v;
-    if (h && f.t === 'money') h.textContent = money(v);
+    if (nb && from !== 'num') nb.value = fmtIn(f.t, v);
     schedule(id);
   };
   root.addEventListener('input', e => {
     const t = e.target;
-    if (t.dataset.r) setNum(t.dataset.r, t.value, 'range');
-    else if (t.dataset.k && t.type === 'number') setNum(t.dataset.k, t.value, 'num');
-    else if (t.dataset.flow !== undefined) { const v = parseFloat(t.value); if (Number.isFinite(v)) { S[id].flujos[+t.dataset.flow] = v; schedule(id); } }
+    if (t.dataset.r) setNum(t.dataset.r, parseFloat(t.value), 'range');
+    else if (t.tagName === 'INPUT' && t.dataset.k) { const f = fieldOf(t.dataset.k); setNum(f.k, f.t === 'pct' ? parseIn('pct', t.value) : liveGroup(t), 'num'); }
+    else if (t.dataset.flow !== undefined) { const v = liveGroup(t); if (Number.isFinite(v)) { S[id].flujos[+t.dataset.flow] = v; schedule(id); } }
   });
   root.addEventListener('change', e => {
     const t = e.target;
     if (t.tagName === 'SELECT') { S[id][t.dataset.k] = t.value; syncVisibility(id); schedule(id); }
+    else if (t.tagName === 'INPUT' && t.dataset.k) t.value = fmtIn(fieldOf(t.dataset.k).t, S[id][t.dataset.k]);
+    else if (t.dataset.flow !== undefined) t.value = fmtIn('money', S[id].flujos[+t.dataset.flow]);
+  });
+  root.addEventListener('keydown', e => {
+    const t = e.target;
+    if (t.tagName !== 'INPUT' || !t.dataset.k || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
+    e.preventDefault();
+    const f = fieldOf(t.dataset.k), v = S[id][f.k] + (e.key === 'ArrowUp' ? 1 : -1) * f.step;
+    setNum(f.k, Math.round(v * 1e6) / 1e6, 'key');
   });
   root.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
@@ -1263,6 +1672,7 @@ const VIC = { good: I.good, bad: I.bad, warn: I.warn, info: I.info };
 const VLAB = { good: 'Resultado favorable', bad: 'Resultado desfavorable', warn: 'Requiere atención', info: 'Resultado' };
 function render(id) {
   if (id === 'resumen') return renderOverview();
+  if (id === 'quiz') return renderQuiz();
   const r = MODS[id].compute(S[id]);
   const al = document.getElementById('al-' + id);
   if (r.error) {
@@ -1322,18 +1732,19 @@ function renderOverview() {
   }).join('');
   const rv = MODS.vpn.compute(S.vpn), rc = MODS.compuesto.compute(S.compuesto);
   const sp = rc.error ? [] : rc.spark;
+  updateQuizBadges();
   document.getElementById('heroViz').innerHTML = `<div class="hv-top"><div><small>VPN del proyecto evaluado</small><div class="big">${rv.error ? '—' : money(rv.kpis[0].v)}</div></div>${rv.error ? '' : `<span class="up">TIR ${pct(rv.kpis[1].v, 2)}</span>`}</div>${sparkSVG(sp, 99, C.cyan)}`;
 }
 
 /* ---------- Navegación ---------- */
 function go(id) {
-  if (id !== 'resumen' && !MODS[id]) id = 'resumen';
+  if (id !== 'resumen' && id !== 'quiz' && !MODS[id]) id = 'resumen';
   current = id;
   document.querySelectorAll('.module').forEach(s => s.hidden = s.id !== 'm-' + id);
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.go === id));
-  document.getElementById('crumb').textContent = id === 'resumen' ? 'Resumen ejecutivo' : MODS[id].title;
-  document.getElementById('btnReset').style.display = id === 'resumen' ? 'none' : '';
-  document.getElementById('btnCsv').style.display = id === 'resumen' ? 'none' : '';
+  document.getElementById('crumb').textContent = id === 'resumen' ? 'Resumen ejecutivo' : id === 'quiz' ? 'Casos reales' : MODS[id].title;
+  document.getElementById('btnReset').style.display = MODS[id] ? '' : 'none';
+  document.getElementById('btnCsv').style.display = MODS[id] ? '' : 'none';
   if (history.replaceState) history.replaceState(null, '', '#' + id);
   document.body.classList.remove('nav-open');
   window.scrollTo(0, 0);
@@ -1365,8 +1776,9 @@ function init() {
   }
   applyTheme();
   buildNav();
-  document.getElementById('main').innerHTML = buildOverview() + ORDER.map(buildModule).join('');
+  document.getElementById('main').innerHTML = buildOverview() + ORDER.map(buildModule).join('') + buildQuiz();
   ORDER.forEach(id => { buildFields(id); bindModule(id); tex(document.getElementById('f-' + id), MODS[id].formula); });
+  bindQuiz();
   document.getElementById('logo').innerHTML = I.logo;
   document.getElementById('burger').innerHTML = I.menu;
   document.getElementById('crumbSep').innerHTML = I.chev;
@@ -1384,7 +1796,7 @@ function init() {
     applyTheme(); render(current);
   };
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { if (!document.documentElement.dataset.theme) { applyTheme(); render(current); } });
-  document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.ov-card')) { e.preventDefault(); go(e.target.dataset.go); } });
+  document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.ov-card, .q-banner')) { e.preventDefault(); go(e.target.dataset.go); } });
   let wasSmall = window.innerWidth < 600, rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const sm = window.innerWidth < 600; if (sm !== wasSmall) { wasSmall = sm; render(current); } }, 200); });
   go((location.hash || '#resumen').slice(1));
